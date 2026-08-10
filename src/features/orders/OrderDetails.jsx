@@ -1,26 +1,26 @@
-import { Avatar, Badge, Divider, Grid, Group, Loader, Paper, Progress, Stack, Text, Tooltip } from "@mantine/core";
-import { IconCards, IconCreditCard, IconCreditCardPay, IconCurrencyDollar, IconReceipt2, IconRepeat, IconStairs, IconUser, IconUserDollar, IconX } from "@tabler/icons-react";
+import { Avatar, Grid, Group, Loader, Stack, Text, Tooltip } from "@mantine/core";
+import { IconCards, IconReceipt2, IconRepeat, IconUser, IconUserDollar, IconX } from "@tabler/icons-react";
 import { truncate } from "lodash";
 import { useParams } from "react-router-dom";
 import { useGetOrderByIdQuery } from "src/api/order";
 import BadgesPopover from "src/components/BadgesPopover";
+import InfoList from "src/components/InfoList";
 import Placeholder from "src/components/Placeholder";
 import { SERVER_URL } from "src/constants/SERVER_URL";
-import classes from "src/index.module.css";
 import formatAmount from "src/utils/formatAmount";
 import formatDate from "src/utils/formatDate";
-import formatNumber from "src/utils/formatNumber";
 import getAbbreviation from "src/utils/getAbbreviation";
 import DeleteOrderButton from "./DeleteOrderButton";
 import EditOrderModalButton from "./EditOrderModalButton";
-import InfoList from "src/components/InfoList";
 
 const createInfoListItems = (order) => [
+  { icon: <IconUser />, label: "client", children: order?.client?.title },
+  { icon: <Avatar src={`${SERVER_URL}${order?.company?.imgUrl}`} size={24} />, label: "company", children: order?.company?.title },
   { icon: <Avatar src={`${SERVER_URL}${order.brand.imgUrl}`} size={24} />, label: "brand", children: order.brand.title },
+  { icon: <IconCards />, label: "services", children: <BadgesPopover items={order?.services?.map((service) => service.title)} /> },
+  { icon: <IconRepeat />, label: "order status", children: order?.status?.title },
   { icon: <IconReceipt2 />, label: "order amount", children: formatAmount(order?.amount) },
-  { icon: <IconCreditCard />, label: "payment gateway", children: order?.paymentGateway?.title },
-  { icon: <IconRepeat />, label: "order type", children: order?.type?.title },
-  { icon: <IconCards />, label: "services", children: <BadgesPopover items={order?.services} /> },
+  { icon: <IconUserDollar />, label: "payment date", children: formatDate(order?.paymentDate) },
 ];
 
 const OrderDetails = () => {
@@ -60,7 +60,7 @@ const OrderDetails = () => {
                 <Text component="span" c={"dimmed"}>
                   Order ID:
                 </Text>
-                {` ${order.data._id}`}
+                {` ${order.data.orderId}`}
               </Text>
 
               <Text size="xs" fw={500}>

@@ -73,7 +73,7 @@ const ClientDetails = () => {
                 <Text component="span" c={"dimmed"}>
                   Client ID:
                 </Text>
-                {` ${client.data._id}`}
+                {` ${client.data.clientId}`}
               </Text>
 
               <Text size="xs" fw={500}>

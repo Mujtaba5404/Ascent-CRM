@@ -39,7 +39,6 @@ const EditProjectModal = ({ isOpen = false, onClose = () => {}, compact = false,
     payload.meta = { type: type.data?.title, status: status.data?.title };
 
     updateProjectMutation.mutate({ projectId: project._id, payload }, { onSuccess: onClose });
-    console.log(payload)
   };
 
   const basicFields = (

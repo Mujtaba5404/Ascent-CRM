@@ -8,16 +8,13 @@ import PaginatedTable from "src/components/PaginatedTable";
 import { SERVER_URL } from "src/constants/SERVER_URL";
 import BrandsMultiSelect from "src/features/brands/BrandsMultiSelect";
 import PicklistsMultiSelect from "src/features/picklists/components/PicklistsMultiSelect";
-import AccountManagersMultiSelect from "src/features/users/AccountManagersMultiSelect";
 import useFilters from "src/hooks/useFilters";
 import capitalizeLetters from "src/utils/capitalizeLetters";
 import formatAmount from "src/utils/formatAmount";
 import formatDate from "src/utils/formatDate";
-import formatNumber from "src/utils/formatNumber";
 import getAbbreviation from "src/utils/getAbbreviation";
-import OrdersTableRowMenu from "./OrdersTableRowMenu";
 import CompaniesMultiSelect from "../companies/CompaniesMultiSelect";
-import CommentPopover from "../comments/CommentPopover";
+import OrdersTableRowMenu from "./OrdersTableRowMenu";
 
 const DEFAULT_COLUMNS = (filters, setFilters) => [
   {
@@ -44,21 +41,14 @@ const DEFAULT_COLUMNS = (filters, setFilters) => [
     render: (row) => formatDate(row.createdAt),
   },
   {
-      accessor: "orderId",
-      width: 155,
-      textAlign: "center",
-      sortable: true,
-      filter: (
-        <TextInput
-          size="xs"
-          placeholder="Search orders by Id"
-          value={filters.orderId}
-          onChange={(e) => setFilters({ orderId: e.target.value })}
-        />
-      ),
-      filtering: filters?.orderId,
-      render: (row) => <Badge>{row?.orderId}</Badge>,
-    },
+    accessor: "orderId",
+    width: 180,
+    textAlign: "center",
+    sortable: true,
+    filter: <TextInput size="xs" placeholder="Search orders by Id" value={filters.orderId} onChange={(e) => setFilters({ orderId: e.target.value })} />,
+    filtering: filters?.orderId,
+    render: (row) => <Badge>{row?.orderId}</Badge>,
+  },
   {
     accessor: "client",
     width: 250,
@@ -82,28 +72,46 @@ const DEFAULT_COLUMNS = (filters, setFilters) => [
   },
   {
     accessor: "brand",
-    width: 225,
-    filter: <BrandsMultiSelect multiSelectProps={{ size: "xs", value: filters.brand || [], onChange: (value) => setFilters({ brand: value }), comboboxProps: { withinPortal: false } }} />,
-    filtering: filters.brand?.length,
+    width: 250,
+    filter: (
+      <Stack gap="xs">
+        <CompaniesMultiSelect
+          multiSelectProps={{
+            size: "xs",
+            placeholder: "Select company",
+            value: filters.company || [],
+            onChange: (value) => setFilters({ company: value, brand: [] }),
+            comboboxProps: { withinPortal: false },
+          }}
+        />
+        <BrandsMultiSelect
+          queryObject={filters.company?.length ? { company: filters.company } : undefined}
+          multiSelectProps={{
+            size: "xs",
+            placeholder: "Select brand",
+            value: filters.brand || [],
+            onChange: (value) => setFilters({ brand: value }),
+            comboboxProps: { withinPortal: false },
+          }}
+        />
+      </Stack>
+    ),
+    filtering: filters?.company?.length || filters?.brand?.length,
     render: (row) => (
       <Group wrap="nowrap" gap={"xs"}>
         <Avatar size={"sm"} src={`${SERVER_URL}${row.brand.imgUrl}`} alt={row.brand.title} title={row.brand.title} radius={"sm"} p={2} bg={"white"}>
           {getAbbreviation(row.brand.title)}
         </Avatar>
-        <Text size="sm" tt="capitalize">
-          {row.brand.title}
-        </Text>
+        <Stack gap={0}>
+          <Text size="sm" tt="capitalize">
+            {row?.brand?.title || "-"}
+          </Text>
+          <Text size="xs" c={"dimmed"} tt="capitalize">
+            {capitalizeLetters(row?.company?.title || "-")}
+          </Text>
+        </Stack>
       </Group>
     ),
-  },
-  {
-    accessor: "company",
-    width: 175,
-    ellipsis: true,
-    textAlign: "center",
-    filter: <CompaniesMultiSelect multiSelectProps={{ size: "xs", value: filters.company || [], onChange: (value) => setFilters({ company: value }), comboboxProps: { withinPortal: false } }} />,
-    filtering: filters?.company,
-    render: (row) => capitalizeLetters(row?.company?.title || "-"),
   },
   {
     accessor: "amount",
@@ -116,8 +124,8 @@ const DEFAULT_COLUMNS = (filters, setFilters) => [
   },
   {
     accessor: "status",
-    textAlign:"center",
-    width: 225,
+    textAlign: "center",
+    width: 160,
     filter: (
       <Stack gap={"xs"}>
         <PicklistsMultiSelect
@@ -141,18 +149,18 @@ const DEFAULT_COLUMNS = (filters, setFilters) => [
   },
   {
     accessor: "services",
-    width: 225,
+    width: 180,
     textAlign: "center",
     filter: <TextInput size="xs" placeholder="Search by services" value={filters.services} onChange={(e) => setFilters({ services: e.target.value })} />,
     filtering: filters?.services,
     render: (row) => <BadgesPopover items={row.services?.map((service) => service.title)} />,
   },
-  {
-    accessor: "last comment",
-    width: 200,
-    textAlign: "center",
-    render: (row) => <CommentPopover comment={row.lastComment} />,
-  },
+  // {
+  //   accessor: "last comment",
+  //   width: 200,
+  //   textAlign: "center",
+  //   render: (row) => <CommentPopover comment={row.lastComment} />,
+  // },
   {
     accessor: "menu",
     width: 60,

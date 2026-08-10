@@ -141,45 +141,23 @@ const DEFAULT_COLUMNS = (filters, setFilters) => [
     filtering: filters.priority?.length,
     render: (row) => <Badge color={row.priority?.color}>{row.priority?.title}</Badge>,
   },
-  {
-    accessor: "tags",
-    title: "Tags",
-    textAlign: "center",
-    width: 250,
-    render: (row) => (
-      <Group gap={4}>
-        {row.tags?.length
-          ? row.tags.map((tag) => (
-              <Badge key={tag} variant="light">
-                {tag}
-              </Badge>
-            ))
-          : "-"}
-      </Group>
-    ),
-  },
-  {
-    accessor: "assignees",
-    title: "Assigned To",
-    width: 175,
-    textAlign: "center",
-    filter: (
-      <UsersMultiSelect
-        multiSelectProps={{
-          size: "xs",
-          value: filters.assignees || [],
-          onChange: (value) => setFilters({ assignees: value }),
-          comboboxProps: { withinPortal: false },
-        }}
-      />
-    ),
-    filtering: filters.assignees?.length,
-    render: (row) => (
-      <Group w="100%" justify="center">
-        <AvatarGroup items={row.assignees || []} getLabel={(i) => i.name || i.fullName || i.email} />
-      </Group>
-    ),
-  },
+  // {
+  //   accessor: "tags",
+  //   title: "Tags",
+  //   textAlign: "center",
+  //   width: 250,
+  //   render: (row) => (
+  //     <Group gap={4}>
+  //       {row.tags?.length
+  //         ? row.tags.map((tag) => (
+  //             <Badge key={tag} variant="light">
+  //               {tag}
+  //             </Badge>
+  //           ))
+  //         : "-"}
+  //     </Group>
+  //   ),
+  // },
   {
     accessor: "startDate",
     title: "Start Date",
@@ -225,6 +203,28 @@ const DEFAULT_COLUMNS = (filters, setFilters) => [
     ),
     filtering: filters.endDate?.length,
     render: (row) => (row.endDate ? formatDate(row.endDate) : "-"),
+  },
+  {
+    accessor: "assignees",
+    title: "Assigned To",
+    width: 175,
+    textAlign: "center",
+    filter: (
+      <UsersMultiSelect
+        multiSelectProps={{
+          size: "xs",
+          value: filters.assignees || [],
+          onChange: (value) => setFilters({ assignees: value }),
+          comboboxProps: { withinPortal: false },
+        }}
+      />
+    ),
+    filtering: filters.assignees?.length,
+    render: (row) => (
+      <Group w="100%" justify="center">
+        <AvatarGroup items={row.assignees || []} getLabel={(i) => i.name || i.fullName || i.email} />
+      </Group>
+    ),
   },
   {
     accessor: "last comment",

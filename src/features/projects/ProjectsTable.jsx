@@ -51,7 +51,7 @@ const DEFAULT_COLUMNS = (filters, setFilters) => [
     filter: <TextInput size="xs" placeholder="Search by name/email/phone" value={filters.clientInfo} onChange={(e) => setFilters({ clientInfo: e.target.value })} />,
     filtering: filters?.clientInfo,
     render: (row) => (
-      <UnstyledButton component={Link} to={`/clients/${row.client._id}`}>
+      <UnstyledButton component={Link} to={`/clients/${row?.client?._id}`}>
         <Group wrap="nowrap" gap={"xs"}>
           <Avatar size={"sm"} src={`${SERVER_URL}${row.brand.imgUrl}`} alt={row.brand.title} title={row.brand.title} radius={"sm"} p={2} bg={"white"}>
             {getAbbreviation(row.brand.title)}
@@ -74,7 +74,7 @@ const DEFAULT_COLUMNS = (filters, setFilters) => [
     textAlign: "center",
     filter: <TextInput size="xs" placeholder="Search clients by phone" value={filters.phone} onChange={(e) => setFilters({ phone: e.target.value })} />,
     filtering: filters?.phone,
-    render: (row) => formatPhone(row.phone) || "-",
+    render: (row) => formatPhone(row.client.phone) || "-",
   },
   {
     accessor: "services",
@@ -92,40 +92,50 @@ const DEFAULT_COLUMNS = (filters, setFilters) => [
         }}
       />
     ),
+
     filtering: filters?.services?.length > 0,
     render: (row) => (row?.services?.length ? row.services.map(capitalizeLetters).join(", ") : "-"),
   },
   {
-    accessor: "company",
-    width: 175,
-    ellipsis: true,
-    textAlign: "center",
-    filter: <CompaniesMultiSelect multiSelectProps={{ size: "xs", value: filters.company || [], onChange: (value) => setFilters({ company: value }), comboboxProps: { withinPortal: false } }} />,
-    filtering: filters?.company,
-    render: (row) => capitalizeLetters(row?.company?.title || "-"),
-  },
-  {
     accessor: "brand",
-    width: 225,
+    width: 250,
     filter: (
-      <BrandsMultiSelect
-        multiSelectProps={{
-          size: "xs",
-          value: filters.brand || [],
-          onChange: (value) => setFilters({ brand: value }),
-          comboboxProps: { withinPortal: false },
-        }}
-      />
+      <Stack gap="xs">
+        <CompaniesMultiSelect
+          multiSelectProps={{
+            size: "xs",
+            placeholder: "Select company",
+            value: filters.company || [],
+            onChange: (value) => setFilters({ company: value, brand: [] }),
+            comboboxProps: { withinPortal: false },
+          }}
+        />
+        <BrandsMultiSelect
+          queryObject={filters.company?.length ? { company: filters.company } : undefined}
+          multiSelectProps={{
+            size: "xs",
+            placeholder: "Select brand",
+            value: filters.brand || [],
+            onChange: (value) => setFilters({ brand: value }),
+            comboboxProps: { withinPortal: false },
+          }}
+        />
+      </Stack>
     ),
-    filtering: filters.brand?.length,
+    filtering: filters?.company?.length || filters?.brand?.length,
     render: (row) => (
       <Group wrap="nowrap" gap={"xs"}>
         <Avatar size={"sm"} src={`${SERVER_URL}${row.brand.imgUrl}`} alt={row.brand.title} title={row.brand.title} radius={"sm"} p={2} bg={"white"}>
           {getAbbreviation(row.brand.title)}
         </Avatar>
-        <Text size="sm" tt="capitalize">
-          {row.brand.title}
-        </Text>
+        <Stack gap={0}>
+          <Text size="sm" tt="capitalize">
+            {row?.brand?.title || "-"}
+          </Text>
+          <Text size="xs" c={"dimmed"} tt="capitalize">
+            {capitalizeLetters(row?.company?.title || "-")}
+          </Text>
+        </Stack>
       </Group>
     ),
   },
@@ -163,16 +173,29 @@ const DEFAULT_COLUMNS = (filters, setFilters) => [
     render: (row) => formatDate(row.endDate),
   },
   {
+    accessor: "type",
+    width: 150,
+    textAlign: "center",
+    filter: (
+      <PicklistsMultiSelect
+        queryObject={{ resource: "Order", field: "type" }}
+        multiSelectProps={{
+          size: "xs",
+          placeholder: "Select type",
+          value: filters.type || [],
+          onChange: (value) => setFilters({ type: value }),
+          comboboxProps: { withinPortal: false },
+        }}
+      />
+    ),
+    filtering: filters.type?.length,
+    render: (row) => <Badge color={row?.type?.color}>{row?.type?.title}</Badge>,
+  },
+  {
     accessor: "assignees",
     width: 180,
     textAlign: "center",
     render: (row) => <BadgesPopover items={row.assignees?.map((assignee) => capitalizeLetters(assignee.name))} />,
-  },
-  {
-    accessor: "type",
-    width: 150,
-    textAlign: "center",
-    render: (row) => <Badge variant="light">{row?.type?.title}</Badge>,
   },
   {
     accessor: "last comment",

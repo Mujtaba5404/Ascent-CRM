@@ -47,14 +47,7 @@ const DEFAULT_COLUMNS = (filters, setFilters) => [
     width: 155,
     textAlign: "center",
     sortable: true,
-    filter: (
-      <TextInput
-        size="xs"
-        placeholder="Search clients by Id"
-        value={filters.clientId}
-        onChange={(e) => setFilters({ clientId: e.target.value })}
-      />
-    ),
+    filter: <TextInput size="xs" placeholder="Search clients by Id" value={filters.clientId} onChange={(e) => setFilters({ clientId: e.target.value })} />,
     filtering: filters?.clientId,
     render: (row) => <Badge>{row?.clientId}</Badge>,
   },
@@ -83,37 +76,46 @@ const DEFAULT_COLUMNS = (filters, setFilters) => [
   },
   {
     accessor: "brand",
-    width: 225,
+    width: 250,
     filter: (
-      <BrandsMultiSelect
-        multiSelectProps={{
-          size: "xs",
-          value: filters.brand || [],
-          onChange: (value) => setFilters({ brand: value }),
-          comboboxProps: { withinPortal: false },
-        }}
-      />
+      <Stack gap="xs">
+        <CompaniesMultiSelect
+          multiSelectProps={{
+            size: "xs",
+            placeholder: "Select company",
+            value: filters.company || [],
+            onChange: (value) => setFilters({ company: value, brand: [] }),
+            comboboxProps: { withinPortal: false },
+          }}
+        />
+        <BrandsMultiSelect
+          queryObject={filters.company?.length ? { company: filters.company } : undefined}
+          multiSelectProps={{
+            size: "xs",
+            placeholder: "Select brand",
+            value: filters.brand || [],
+            onChange: (value) => setFilters({ brand: value }),
+            comboboxProps: { withinPortal: false },
+          }}
+        />
+      </Stack>
     ),
-    filtering: filters.brand?.length,
+    filtering: filters?.company?.length || filters?.brand?.length,
     render: (row) => (
       <Group wrap="nowrap" gap={"xs"}>
         <Avatar size={"sm"} src={`${SERVER_URL}${row.brand.imgUrl}`} alt={row.brand.title} title={row.brand.title} radius={"sm"} p={2} bg={"white"}>
           {getAbbreviation(row.brand.title)}
         </Avatar>
-        <Text size="sm" tt="capitalize">
-          {row.brand.title}
-        </Text>
+        <Stack gap={0}>
+          <Text size="sm" tt="capitalize">
+            {row?.brand?.title || "-"}
+          </Text>
+          <Text size="xs" c={"dimmed"} tt="capitalize">
+            {capitalizeLetters(row?.company?.title || "-")}
+          </Text>
+        </Stack>
       </Group>
     ),
-  },
-  {
-    accessor: "company",
-    width: 175,
-    ellipsis: true,
-    textAlign: "center",
-    filter: <CompaniesMultiSelect multiSelectProps={{ size: "xs", value: filters.company || [], onChange: (value) => setFilters({ company: value }), comboboxProps: { withinPortal: false } }} />,
-    filtering: filters?.company,
-    render: (row) => capitalizeLetters(row?.company?.title || "-"),
   },
   {
     accessor: "worth",
@@ -125,79 +127,10 @@ const DEFAULT_COLUMNS = (filters, setFilters) => [
     accessor: "phone",
     width: 150,
     textAlign: "center",
-    filter: (
-      <TextInput
-        size="xs"
-        placeholder="Search clients by phone"
-        value={filters.phone}
-        onChange={(e) => setFilters({ phone: e.target.value })}
-      />
-    ),
+    filter: <TextInput size="xs" placeholder="Search clients by phone" value={filters.phone} onChange={(e) => setFilters({ phone: e.target.value })} />,
     filtering: filters?.phone,
     render: (row) => formatPhone(row.phone) || "-",
   },
-  // {
-  //   accessor: "status",
-  //   width: 150,
-  //   textAlign: "center",
-  //   filter: (
-  //     <PicklistsMultiSelect
-  //       queryObject={{ resource: "Client", field: "status" }}
-  //       multiSelectProps={{
-  //         size: "xs",
-  //         placeholder: "Select status",
-  //         value: filters.status || [],
-  //         onChange: (value) => setFilters({ status: value }),
-  //         comboboxProps: { withinPortal: false },
-  //       }}
-  //     />
-  //   ),
-  //   filtering: filters.status?.length,
-  //   render: (row) => <Badge color={row?.status?.color}>{row?.status?.title}</Badge>,
-  // },
-  // {
-  //   accessor: "health",
-  //   width: 150,
-  //   textAlign: "center",
-  //   filter: (
-  //     <PicklistsMultiSelect
-  //       queryObject={{ resource: "Client", field: "health" }}
-  //       multiSelectProps={{
-  //         size: "xs",
-  //         placeholder: "Select health",
-  //         value: filters.health || [],
-  //         onChange: (value) => setFilters({ health: value }),
-  //         comboboxProps: { withinPortal: false },
-  //       }}
-  //     />
-  //   ),
-  //   filtering: filters.health?.length,
-  //   render: (row) => <Badge color={row?.health?.color}>{row?.health?.title}</Badge>,
-  // },
-  // {
-  //   accessor: "category",
-  //   width: 175,
-  //   textAlign: "center",
-  //   filter: (
-  //     <ClientCategoriesMultiSelect
-  //       multiSelectProps={{
-  //         size: "xs",
-  //         value: filters.category || [],
-  //         onChange: (value) => setFilters({ category: value }),
-  //         comboboxProps: { withinPortal: false },
-  //       }}
-  //     />
-  //   ),
-  //   filtering: filters.category?.length,
-  //   render: (row) => (
-  //     <Group justify="center" wrap="nowrap" gap={"xs"}>
-  //       <img src={`${SERVER_URL}${row.category?.imgUrl}`} style={{ width: rem(22) }} />
-  //       <Text size="sm" tt={"capitalize"}>
-  //         {row.category?.title}
-  //       </Text>
-  //     </Group>
-  //   ),
-  // },
   {
     accessor: "last comment",
     width: 200,

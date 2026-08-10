@@ -19,7 +19,7 @@ const AddTaskModal = ({ isOpen = false, onClose = () => {}, clientInfo = {} }) =
   const form = useForm({
     initialValues: {
       client: clientInfo?.client || undefined,
-      project: undefined,
+      project: clientInfo?.project || undefined,
       title: "",
       description: "",
       subTasks: [{ title: "Sub task 1", isCompleted: false }],
@@ -46,7 +46,7 @@ const AddTaskModal = ({ isOpen = false, onClose = () => {}, clientInfo = {} }) =
     });
   };
 
-  const hasClientInfo = clientInfo?.brand && clientInfo?.client;
+  const hasClientInfo = clientInfo?.client && clientInfo?.project;
 
   const subTasks = (
     <Stack gap={"xs"}>
@@ -89,12 +89,16 @@ const AddTaskModal = ({ isOpen = false, onClose = () => {}, clientInfo = {} }) =
       <Stack component={"form"} onSubmit={form.onSubmit(handleSubmit)}>
         <ScrollArea.Autosize mah={450} scrollbars="y">
           <Grid grow align="flex-end" tt={"capitalize"}>
-            <Grid.Col span={{ base: 12, sm: 6 }}>
-              <ClientsSelect selectProps={{ required: true, label: "select client", selectLabel: "title", ...form.getInputProps("client") }} brandId={form.getValues().brand} />
-            </Grid.Col>
-            <Grid.Col span={{ base: 12, sm: 6 }}>
-              <ProjectsSelect selectProps={{ label: "select project", selectLabel: "title", ...form.getInputProps("project") }} />
-            </Grid.Col>
+            {!hasClientInfo && (
+              <>
+                <Grid.Col span={{ base: 12, sm: 6 }}>
+                  <ClientsSelect selectProps={{ required: true, label: "select client", selectLabel: "title", ...form.getInputProps("client") }} brandId={form.getValues().brand} />
+                </Grid.Col>
+                <Grid.Col span={{ base: 12, sm: 6 }}>
+                  <ProjectsSelect selectProps={{ label: "select project", selectLabel: "title", ...form.getInputProps("project") }} />
+                </Grid.Col>
+              </>
+            )}
             <Grid.Col span={12}>
               <TextInput label="title" {...form.getInputProps("title")} />
             </Grid.Col>

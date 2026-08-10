@@ -6,6 +6,7 @@ import { useCreateOrderMutation } from "src/api/order";
 import PicklistsSelect from "src/features/picklists/components/PicklistsSelect";
 import PicklistsTagsInput from "src/features/picklists/components/PicklistsTagsInput";
 import ClientsSelect from "../clients/ClientsSelect";
+import PicklistsMultiSelect from "../picklists/components/PicklistsMultiSelect";
 
 const AddOrderModal = ({ isOpen = false, onClose = () => {}, clientInfo = {} }) => {
   const createOrderMutation = useCreateOrderMutation();
@@ -47,8 +48,8 @@ const AddOrderModal = ({ isOpen = false, onClose = () => {}, clientInfo = {} }) 
               </Grid.Col>
             </>
           )}
-          <Grid.Col span={{ base: 12, sm: 6 }}>
-            <PicklistsTagsInput queryObject={{ resource: "Order", field: "services" }} tagsInputProps={{ required: true, label: "Services", ...form.getInputProps("services") }} />
+          <Grid.Col span={{base: 12, sm: 6}}>
+            <PicklistsMultiSelect queryObject={{ resource: "Order", field: "services" }} multiSelectProps={{ label: "services", ...form.getInputProps("services") }} />
           </Grid.Col>
           <Grid.Col span={{ base: 12, sm: 6 }}>
             <PicklistsSelect queryObject={{ resource: "Order", field: "status" }} selectProps={{ label: "Order Status", ...form.getInputProps("status") }} />
@@ -57,7 +58,7 @@ const AddOrderModal = ({ isOpen = false, onClose = () => {}, clientInfo = {} }) 
             <NumberInput required label="amount" prefix="$" {...form.getInputProps("amount")} />
           </Grid.Col>
           <Grid.Col span={12}>
-            <DateInput label="paymentDate" maxDate={new Date()} {...form.getInputProps("paymentDate")} />
+            <DateInput label="payment Date" maxDate={new Date()} {...form.getInputProps("paymentDate")} />
           </Grid.Col>
         </Grid>
 

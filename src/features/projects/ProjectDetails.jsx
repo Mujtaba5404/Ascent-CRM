@@ -1,5 +1,5 @@
 import { Avatar, Badge, Grid, Group, Loader, Paper, Stack, Tabs, Text, Tooltip } from "@mantine/core";
-import { IconBolt, IconNote, IconUser, IconUserDollar, IconX } from "@tabler/icons-react";
+import { IconBolt, IconNote, IconStatusChange, IconUser, IconX } from "@tabler/icons-react";
 import { truncate } from "lodash";
 import { useParams } from "react-router-dom";
 import { useGetProjectByIdQuery } from "src/api/project";
@@ -12,7 +12,6 @@ import OrdersTable from "src/features/orders/OrdersTable";
 import AddTaskModalButton from "src/features/tasks/AddTaskModalButton";
 import TasksTable from "src/features/tasks/TasksTable";
 import classes from "src/index.module.css";
-import formatAmount from "src/utils/formatAmount";
 import formatDate from "src/utils/formatDate";
 import getAbbreviation from "src/utils/getAbbreviation";
 import DeleteProjectButton from "./DeleteProjectButton";
@@ -23,7 +22,7 @@ const createInfoListItems = (project) => [
   { icon: <Avatar src={`${SERVER_URL}${project?.brand?.imgUrl}`} size={24} />, label: "brand", children: project.brand.title },
   { icon: <IconUser />, label: "client", children: project?.client?.title },
   { icon: <IconBolt />, label: "type", children: <Badge color={project?.type?.color}>{project?.type?.title}</Badge> },
-  { icon: <IconBolt />, label: "status", children: <Badge color={project?.status?.color}>{project?.status?.title}</Badge> },
+  { icon: <IconStatusChange />, label: "status", children: <Badge color={project?.status?.color}>{project?.status?.title}</Badge> },
 ];
 
 const ProjectDetails = () => {
@@ -120,15 +119,15 @@ const ProjectDetails = () => {
 
             <Tabs.Panel value="orders">
               <Stack>
-                <AddOrderModalButton projectInfo={{ brand: project.data.brand._id, project: project.data._id }} />
+                <AddOrderModalButton clientInfo={{ client: project.data.client._id, brand: project.data.brand._id, project: project.data._id }} />
 
-                <OrdersTable query={{ project: id }} hideColumns={["project", "brand", "accountManager"]} />
+                <OrdersTable query={{ client: project.data.client._id }} hideColumns={["client", "brand",]} />
               </Stack>
             </Tabs.Panel>
 
             <Tabs.Panel value="tasks">
               <Stack>
-                <AddTaskModalButton projectInfo={{ brand: project.data.brand._id, project: project.data._id }} />
+                <AddTaskModalButton clientInfo={{ client: project.data.client._id, brand: project.data.brand._id, project: project.data._id }} />
 
                 <TasksTable query={{ project: id }} hideColumns={["project"]} />
               </Stack>
