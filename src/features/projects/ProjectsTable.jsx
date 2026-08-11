@@ -1,4 +1,5 @@
 import { Avatar, Badge, Button, Group, Stack, Text, TextInput, UnstyledButton } from "@mantine/core";
+import AvatarGroup from "src/components/AvatarGroup";
 import { DatePicker } from "@mantine/dates";
 import { useLocalStorage } from "@mantine/hooks";
 import { truncate } from "lodash";
@@ -9,17 +10,15 @@ import { SERVER_URL } from "src/constants/SERVER_URL";
 import BrandsMultiSelect from "src/features/brands/BrandsMultiSelect";
 import CommentPopover from "src/features/comments/CommentPopover";
 import PicklistsMultiSelect from "src/features/picklists/components/PicklistsMultiSelect";
-import AccountManagersMultiSelect from "src/features/users/AccountManagersMultiSelect";
 import useFilters from "src/hooks/useFilters";
 import capitalizeLetters from "src/utils/capitalizeLetters";
-import formatAmount from "src/utils/formatAmount";
 import formatDate from "src/utils/formatDate";
-import getAbbreviation from "src/utils/getAbbreviation";
-import ProjectsTableRowMenu from "./ProjectsTableRowMenu";
-import BadgesPopover from "src/components/BadgesPopover";
-import CompaniesMultiSelect from "../companies/CompaniesMultiSelect";
 import formatPhone from "src/utils/formatPhone";
+import getAbbreviation from "src/utils/getAbbreviation";
+import CompaniesMultiSelect from "../companies/CompaniesMultiSelect";
 import PicklistsTagsInput from "../picklists/components/PicklistsTagsInput";
+import UsersMultiSelect from "../users/UsersMultiSelect";
+import ProjectsTableRowMenu from "./ProjectsTableRowMenu";
 
 const DEFAULT_COLUMNS = (filters, setFilters) => [
   {
@@ -48,10 +47,10 @@ const DEFAULT_COLUMNS = (filters, setFilters) => [
   {
     accessor: "client",
     width: 250,
-    filter: <TextInput size="xs" placeholder="Search by name/email/phone" value={filters.clientInfo} onChange={(e) => setFilters({ clientInfo: e.target.value })} />,
+    filter: <TextInput size="xs" placeholder="Search by name/email" value={filters.clientInfo} onChange={(e) => setFilters({ clientInfo: e.target.value })} />,
     filtering: filters?.clientInfo,
     render: (row) => (
-      <UnstyledButton component={Link} to={`/clients/${row?.client?._id}`}>
+      <UnstyledButton >
         <Group wrap="nowrap" gap={"xs"}>
           <Avatar size={"sm"} src={`${SERVER_URL}${row.brand.imgUrl}`} alt={row.brand.title} title={row.brand.title} radius={"sm"} p={2} bg={"white"}>
             {getAbbreviation(row.brand.title)}
@@ -145,7 +144,7 @@ const DEFAULT_COLUMNS = (filters, setFilters) => [
     textAlign: "center",
     filter: (
       <PicklistsMultiSelect
-        queryObject={{ resource: "Client", field: "status" }}
+        queryObject={{ resource: "Project", field: "status" }}
         multiSelectProps={{
           size: "xs",
           placeholder: "Select status",
@@ -178,7 +177,7 @@ const DEFAULT_COLUMNS = (filters, setFilters) => [
     textAlign: "center",
     filter: (
       <PicklistsMultiSelect
-        queryObject={{ resource: "Order", field: "type" }}
+        queryObject={{ resource: "Project", field: "type" }}
         multiSelectProps={{
           size: "xs",
           placeholder: "Select type",
@@ -193,9 +192,25 @@ const DEFAULT_COLUMNS = (filters, setFilters) => [
   },
   {
     accessor: "assignees",
+    title: "Assigned To",
     width: 180,
     textAlign: "center",
-    render: (row) => <BadgesPopover items={row.assignees?.map((assignee) => capitalizeLetters(assignee.name))} />,
+    filter: (
+      <UsersMultiSelect
+        multiSelectProps={{
+          size: "xs",
+          value: filters.assignees || [],
+          onChange: (value) => setFilters({ assignees: value }),
+          comboboxProps: { withinPortal: false },
+        }}
+      />
+    ),
+    filtering: filters.assignees?.length,
+    render: (row) => (
+      <Group w="100%" justify="center">
+        <AvatarGroup items={row.assignees || []} getLabel={(i) => i.name || i.fullName || i.email} />
+      </Group>
+    ),
   },
   {
     accessor: "last comment",

@@ -17,14 +17,14 @@ const EditOrderModal = ({ isOpen = false, onClose = () => {}, compact = false, o
       client: order?.client._id,
       amount: order?.amount ?? 0,
       status: order?.status?._id ?? order?.status,
-      services: order?.services || [],
+      services: order?.services?.map((s) => s._id || s) || [],
       paymentDate: order?.paymentDate ? new Date(order.paymentDate) : new Date(),
     },
   });
 
- const handleSubmit = (values) => {
-    const payload = {...values, paymentDate: formatDate(values.paymentDate, "YYYY-MM-DD")};
-    updateOrderMutation.mutate({orderId: order._id, payload},{onSuccess: onClose});
+  const handleSubmit = (values) => {
+    const payload = { ...values, paymentDate: formatDate(values.paymentDate, "YYYY-MM-DD") };
+    updateOrderMutation.mutate({ orderId: order._id, payload }, { onSuccess: onClose });
   };
 
   const basicFields = (
@@ -53,7 +53,7 @@ const EditOrderModal = ({ isOpen = false, onClose = () => {}, compact = false, o
           {!compact && basicFields}
 
           <Grid.Col span={{ base: 12, sm: 8 }}>
-            <PicklistsMultiSelect queryObject={{ resource: "Order", field: "services" }} multiSelectProps={{ label: "services", ...form.getInputProps("services") }}  />
+            <PicklistsMultiSelect queryObject={{ resource: "Order", field: "services" }} multiSelectProps={{ label: "services", ...form.getInputProps("services") }} />
           </Grid.Col>
 
           <Grid.Col span={{ base: 12, sm: form.getValues().orderStatus ? 6 : 6 }}>

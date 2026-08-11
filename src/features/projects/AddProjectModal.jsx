@@ -178,6 +178,20 @@ const AddProjectModal = ({ isOpen = false, onClose = () => {} }) => {
       <Stack component={"form"} onSubmit={form.onSubmit(handleSubmit)}>
         <ScrollArea.Autosize mah={450} scrollbars="y">
           <Stack gap="md">
+            <Fieldset legend="Order Information" tt={"capitalize"}>
+              <Grid grow align="flex-end">
+                <Grid.Col span={{ base: 12, sm: 6 }}>
+                  <DateInput label="payment Date" maxDate={new Date()} {...form.getInputProps("initialProjectPayload.paymentDate")} />
+                </Grid.Col>
+                <Grid.Col span={{ base: 12, sm: 6 }}>
+                  <NumberInput required label="amount" prefix="$" {...form.getInputProps("initialProjectPayload.amount")} />
+                </Grid.Col>
+                <Grid.Col span={12}>
+                  <PicklistsMultiSelect queryObject={{ resource: "Order", field: "services" }} multiSelectProps={{ label: "services", ...form.getInputProps("initialProjectPayload.services") }} />
+                </Grid.Col>
+              </Grid>
+            </Fieldset>
+
             <Fieldset legend="Project Information" tt={"capitalize"}>
               <Grid grow align="flex-end">
                 <Grid.Col span={{ base: 12, sm: 12 }}>
@@ -248,20 +262,6 @@ const AddProjectModal = ({ isOpen = false, onClose = () => {} }) => {
                 </Grid.Col>
                 <Grid.Col span={12}>
                   <Textarea rows={3} label="description" {...form.getInputProps("description")} />
-                </Grid.Col>
-              </Grid>
-            </Fieldset>
-
-            <Fieldset legend="Order Information" tt={"capitalize"}>
-              <Grid grow align="flex-end">
-                <Grid.Col span={{ base: 12, sm: 6 }}>
-                  <DateInput label="payment Date" maxDate={new Date()} {...form.getInputProps("initialProjectPayload.paymentDate")} />
-                </Grid.Col>
-                <Grid.Col span={{ base: 12, sm: 6 }}>
-                  <NumberInput required label="amount" prefix="$" {...form.getInputProps("initialProjectPayload.amount")} />
-                </Grid.Col>
-                <Grid.Col span={12}>
-                  <PicklistsMultiSelect queryObject={{ resource: "Order", field: "services" }} multiSelectProps={{ label: "services", ...form.getInputProps("services") }} />
                 </Grid.Col>
               </Grid>
             </Fieldset>

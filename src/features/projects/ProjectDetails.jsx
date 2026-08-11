@@ -58,12 +58,12 @@ const ProjectDetails = () => {
                 <DeleteProjectButton projectId={project.data._id} redirect />
               </Group>
 
-              <Text size="xs" fw={500} mt={6}>
+              {/* <Text size="xs" fw={500} mt={6}>
                 <Text component="span" c={"dimmed"}>
                   Project ID:
                 </Text>
                 {` ${project.data._id}`}
-              </Text>
+              </Text> */}
 
               <Text size="xs" fw={500}>
                 <Text component="span" c={"dimmed"}>
