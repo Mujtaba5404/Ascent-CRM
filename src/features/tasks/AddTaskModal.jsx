@@ -39,7 +39,7 @@ const AddTaskModal = ({ isOpen = false, onClose = () => {}, clientInfo = {} }) =
   });
 
   const handleSubmit = (values) => {
-    const payload = { ...values, startDate: formatDate(values.startDate, "YYYY-MM-DD"), endDate: formatDate(values.startDate, "YYYY-MM-DD") };
+    const payload = { ...values, startDate: formatDate(values.startDate, "YYYY-MM-DD"), endDate: formatDate(values.endDate, "YYYY-MM-DD") };
 
     createTaskMutation.mutate(payload, {
       onSuccess: ({ data }) => navigate(`/tasks/${data._id}`),
@@ -95,7 +95,10 @@ const AddTaskModal = ({ isOpen = false, onClose = () => {}, clientInfo = {} }) =
                   <ClientsSelect selectProps={{ required: true, label: "select client", selectLabel: "title", ...form.getInputProps("client") }} brandId={form.getValues().brand} />
                 </Grid.Col>
                 <Grid.Col span={{ base: 12, sm: 6 }}>
-                  <ProjectsSelect selectProps={{ label: "select project", selectLabel: "title", ...form.getInputProps("project") }} />
+                  <ProjectsSelect
+                    selectProps={{ label: "select project", selectLabel: "title", ...form.getInputProps("project") }}
+                    queryObject={form.getValues().client && { client: form.getValues().client }}
+                  />
                 </Grid.Col>
               </>
             )}
@@ -111,11 +114,11 @@ const AddTaskModal = ({ isOpen = false, onClose = () => {}, clientInfo = {} }) =
             <Grid.Col span={12}>
               <UsersMultiSelect queryObject={{ brands: form.getValues().brand }} multiSelectProps={{ label: "assigned to", ...form.getInputProps("assignees") }} />
             </Grid.Col>
-            <Grid.Col span={12}>
+            <Grid.Col span={{ base: 12, sm: 6 }}>
               <DatePickerInput label="start date" {...form.getInputProps("startDate")} />
             </Grid.Col>
-            <Grid.Col span={12}>
-              <DatePickerInput label="end date" {...form.getInputProps("endDate")} />
+            <Grid.Col span={{ base: 12, sm: 6 }}>
+              <DatePickerInput label="end date" minDate={form.getValues().startDate} {...form.getInputProps("endDate")} />
             </Grid.Col>
             <Grid.Col span={12}>
               <Textarea label="description" rows={3} {...form.getInputProps("description")} />

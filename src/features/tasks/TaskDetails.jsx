@@ -158,7 +158,7 @@ const TaskDetails = () => {
                     Assigned to
                   </Text>
 
-                  <AvatarGroup items={task.data?.assignedTo} getLabel={(i) => i.name} />
+                  <AvatarGroup items={task.data?.assignees} getLabel={(i) => i.name} />
                 </Stack>
               </Group>
             </Stack>

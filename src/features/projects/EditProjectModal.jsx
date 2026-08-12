@@ -23,7 +23,7 @@ const EditProjectModal = ({ isOpen = false, onClose = () => {}, compact = false,
       status: project?.status?._id,
       type: project?.type?._id,
       // amount: project?.amount,
-      // services: project?.services || [],
+      services: project?.services?.map((service) => service._id) || [],
       assignees: project?.assignees?.map((a) => a._id) || [],
       startDate: new Date(project?.startDate.split("T")[0]),
       endDate: new Date(project?.endDate.split("T")[0]),
@@ -75,7 +75,7 @@ const EditProjectModal = ({ isOpen = false, onClose = () => {}, compact = false,
         <Grid grow align="flex-end">
           {!compact && basicFields}
 
-          <Grid.Col span={{ base: 12, sm: compact ? 12 : 6 }}>
+          <Grid.Col span={{ base: 12, sm: compact ? 12 : 8 }}>
             <BrandsSelect selectProps={{ required: true, label: "brand", ...form.getInputProps("brand") }} />
           </Grid.Col>
 
@@ -91,11 +91,11 @@ const EditProjectModal = ({ isOpen = false, onClose = () => {}, compact = false,
             <PicklistsSelect queryObject={{ resource: "Project", field: "type" }} selectProps={{ label: "project type", ...form.getInputProps("type") }} />
           </Grid.Col>
 
-          {/* <Grid.Col span={12}>
-            <PicklistsMultiSelect queryObject={{ resource: "Order", field: "services" }} multiSelectProps={{ label: "services", ...form.getInputProps("services") }}  />
-          </Grid.Col> */}
+          <Grid.Col span={{ base: 12, sm: compact ? 6 : 6 }}>
+            <PicklistsMultiSelect queryObject={{ resource: "Order", field: "services" }} multiSelectProps={{label: "services", ...form.getInputProps("services")}}/>
+          </Grid.Col>
 
-          <Grid.Col span={12}>
+          <Grid.Col span={{ base: 12, sm: compact ? 6 : 6 }}>
             <UsersMultiSelect queryObject={form.getValues().brand && { brands: form.getValues().brand }} multiSelectProps={{ label: "assigned to", ...form.getInputProps("assignees") }} />
           </Grid.Col>
 

@@ -51,7 +51,7 @@ const OrderDetails = () => {
                   </Text>
                 </Tooltip>
 
-                <EditOrderModalButton orderId={order.data} />
+                <EditOrderModalButton order={order.data} />
 
                 <DeleteOrderButton orderId={order.data._id} redirect />
               </Group>

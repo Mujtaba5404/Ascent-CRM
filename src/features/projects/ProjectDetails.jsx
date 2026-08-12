@@ -16,6 +16,7 @@ import formatDate from "src/utils/formatDate";
 import getAbbreviation from "src/utils/getAbbreviation";
 import DeleteProjectButton from "./DeleteProjectButton";
 import EditProjectModalButton from "./EditProjectModalButton";
+import capitalizeLetters from "src/utils/capitalizeLetters";
 
 const createInfoListItems = (project) => [
   
@@ -91,12 +92,12 @@ const ProjectDetails = () => {
               <IconNote className={classes.icon} />
 
               <Text size="xs" c={"dimmed"} fw={500}>
-                notes
+                description
               </Text>
             </Group>
 
             <Text size="sm" fw={500}>
-              {project.data.notes || "No additional notes"}
+              {capitalizeLetters(project.data.description || "No additional description")}
             </Text>
           </Paper>
 
@@ -134,7 +135,7 @@ const ProjectDetails = () => {
             </Tabs.Panel>
 
             <Tabs.Panel value="comments">
-              <CommentBox resource="project" resourceId={id} />
+              <CommentBox resource="Project" resourceId={id} />
             </Tabs.Panel>
           </Tabs>
         </Stack>

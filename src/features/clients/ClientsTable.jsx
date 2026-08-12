@@ -44,7 +44,7 @@ const DEFAULT_COLUMNS = (filters, setFilters) => [
   },
   {
     accessor: "clientId",
-    width: 155,
+    width: 200,
     textAlign: "center",
     sortable: true,
     filter: <TextInput size="xs" placeholder="Search clients by Id" value={filters.clientId} onChange={(e) => setFilters({ clientId: e.target.value })} />,
@@ -54,7 +54,7 @@ const DEFAULT_COLUMNS = (filters, setFilters) => [
   {
     accessor: "client",
     width: 250,
-    filter: <TextInput size="xs" placeholder="Search by name/email/phone" value={filters.clientInfo} onChange={(e) => setFilters({ clientInfo: e.target.value })} />,
+    filter: <TextInput size="xs" placeholder="Search by name/email" value={filters.clientInfo} onChange={(e) => setFilters({ clientInfo: e.target.value })} />,
     filtering: filters?.clientInfo,
     render: (row) => (
       <UnstyledButton component={Link} to={`/clients/${row._id}`}>

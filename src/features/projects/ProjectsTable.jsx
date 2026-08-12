@@ -19,6 +19,7 @@ import CompaniesMultiSelect from "../companies/CompaniesMultiSelect";
 import PicklistsTagsInput from "../picklists/components/PicklistsTagsInput";
 import UsersMultiSelect from "../users/UsersMultiSelect";
 import ProjectsTableRowMenu from "./ProjectsTableRowMenu";
+import BadgesPopover from "src/components/BadgesPopover";
 
 const DEFAULT_COLUMNS = (filters, setFilters) => [
   {
@@ -50,7 +51,7 @@ const DEFAULT_COLUMNS = (filters, setFilters) => [
     filter: <TextInput size="xs" placeholder="Search by name/email" value={filters.clientInfo} onChange={(e) => setFilters({ clientInfo: e.target.value })} />,
     filtering: filters?.clientInfo,
     render: (row) => (
-      <UnstyledButton >
+      <UnstyledButton component={Link} to={`/projects/${row._id}`}>
         <Group wrap="nowrap" gap={"xs"}>
           <Avatar size={"sm"} src={`${SERVER_URL}${row.brand.imgUrl}`} alt={row.brand.title} title={row.brand.title} radius={"sm"} p={2} bg={"white"}>
             {getAbbreviation(row.brand.title)}
@@ -59,7 +60,7 @@ const DEFAULT_COLUMNS = (filters, setFilters) => [
             <Text size="sm" tt="capitalize">
               {row.client?.title}
             </Text>
-            <Text size="xs" c={"dimmed"} title={row.client?.email}>
+            <Text size="xs" c={"dimmed"} title={row.email}>
               {truncate(row.client?.email, { length: 30 })}
             </Text>
           </div>
@@ -73,18 +74,17 @@ const DEFAULT_COLUMNS = (filters, setFilters) => [
     textAlign: "center",
     filter: <TextInput size="xs" placeholder="Search clients by phone" value={filters.phone} onChange={(e) => setFilters({ phone: e.target.value })} />,
     filtering: filters?.phone,
-    render: (row) => formatPhone(row.client.phone) || "-",
+    render: (row) => formatPhone(row?.client?.phone) || "-",
   },
   {
     accessor: "services",
     width: 175,
     ellipsis: true,
     textAlign: "center",
-
     filter: (
-      <PicklistsTagsInput
+      <PicklistsMultiSelect
         queryObject={{ resource: "Order", field: "services" }}
-        tagsInputProps={{
+        multiSelectProps={{
           size: "xs",
           value: filters.services || [],
           onChange: (value) => setFilters({ services: value }),
@@ -93,7 +93,7 @@ const DEFAULT_COLUMNS = (filters, setFilters) => [
     ),
 
     filtering: filters?.services?.length > 0,
-    render: (row) => (row?.services?.length ? row.services.map(capitalizeLetters).join(", ") : "-"),
+    render: (row) => <BadgesPopover items={row.services?.map((service) => capitalizeLetters(service?.title || ""))} />,
   },
   {
     accessor: "brand",

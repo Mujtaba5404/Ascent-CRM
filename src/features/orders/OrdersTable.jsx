@@ -15,6 +15,7 @@ import formatDate from "src/utils/formatDate";
 import getAbbreviation from "src/utils/getAbbreviation";
 import CompaniesMultiSelect from "../companies/CompaniesMultiSelect";
 import OrdersTableRowMenu from "./OrdersTableRowMenu";
+import CommentPopover from "../comments/CommentPopover";
 
 const DEFAULT_COLUMNS = (filters, setFilters) => [
   {
@@ -155,12 +156,12 @@ const DEFAULT_COLUMNS = (filters, setFilters) => [
     filtering: filters?.services,
     render: (row) => <BadgesPopover items={row.services?.map((service) => service.title)} />,
   },
-  // {
-  //   accessor: "last comment",
-  //   width: 200,
-  //   textAlign: "center",
-  //   render: (row) => <CommentPopover comment={row.lastComment} />,
-  // },
+  {
+    accessor: "last comment",
+    width: 200,
+    textAlign: "center",
+    render: (row) => <CommentPopover comment={row.lastComment} />,
+  },
   {
     accessor: "menu",
     width: 60,

@@ -1,5 +1,5 @@
 import { Avatar, Badge, Grid, Group, Loader, Paper, Stack, Tabs, Text, Tooltip } from "@mantine/core";
-import { IconActivityHeartbeat, IconAt, IconBolt, IconNote, IconPhone, IconUser, IconUserDollar, IconX } from "@tabler/icons-react";
+import { IconActivityHeartbeat, IconAt, IconBolt, IconCalendarEvent, IconNote, IconPhone, IconUser, IconUserDollar, IconX } from "@tabler/icons-react";
 import { truncate } from "lodash";
 import { useParams } from "react-router-dom";
 import { useGetClientByIdQuery } from "src/api/client";
@@ -20,6 +20,7 @@ import DeleteClientButton from "./DeleteClientButton";
 import EditClientModalButton from "./EditClientModalButton";
 import AddProjectModalButton from "../projects/AddProjectModalButton";
 import ProjectsTable from "../projects/ProjectsTable";
+import capitalizeLetters from "src/utils/capitalizeLetters";
 
 const createInfoListItems = (client) => [
   {
@@ -33,6 +34,7 @@ const createInfoListItems = (client) => [
   },
   { icon: <IconPhone />, label: "phone", children: formatPhone(client.phone) },
   { icon: <Avatar src={`${SERVER_URL}${client.brand.imgUrl}`} size={24} />, label: "brand", children: client.brand.title },
+  { icon: <IconCalendarEvent />, label: "lastOrderDate", children: formatDate(client?.orderMetrics?.lastOrderDate) },
   { icon: <IconUserDollar />, label: "worth", children: formatAmount(client?.orderMetrics?.totalAmount || 0) },
 ];
 
@@ -102,12 +104,12 @@ const ClientDetails = () => {
               <IconNote className={classes.icon} />
 
               <Text size="xs" c={"dimmed"} fw={500}>
-                notes
+                description
               </Text>
             </Group>
 
             <Text size="sm" fw={500}>
-              {client.data.notes || "No additional notes"}
+              {capitalizeLetters(client.data.description || "No additional description")}
             </Text>
           </Paper>
 
