@@ -1,5 +1,5 @@
 import { Avatar, Badge, Grid, Group, Loader, Paper, Stack, Tabs, Text, Tooltip } from "@mantine/core";
-import { IconBolt, IconNote, IconStatusChange, IconUser, IconX } from "@tabler/icons-react";
+import { IconBolt, IconNote, IconStatusChange, IconTransactionDollar, IconUser, IconX } from "@tabler/icons-react";
 import { truncate } from "lodash";
 import { useParams } from "react-router-dom";
 import { useGetProjectByIdQuery } from "src/api/project";
@@ -7,23 +7,22 @@ import InfoList from "src/components/InfoList";
 import Placeholder from "src/components/Placeholder";
 import { SERVER_URL } from "src/constants/SERVER_URL";
 import CommentBox from "src/features/comments/CommentBox";
-import AddOrderModalButton from "src/features/orders/AddOrderModalButton";
-import OrdersTable from "src/features/orders/OrdersTable";
 import AddTaskModalButton from "src/features/tasks/AddTaskModalButton";
 import TasksTable from "src/features/tasks/TasksTable";
 import classes from "src/index.module.css";
+import capitalizeLetters from "src/utils/capitalizeLetters";
 import formatDate from "src/utils/formatDate";
 import getAbbreviation from "src/utils/getAbbreviation";
 import DeleteProjectButton from "./DeleteProjectButton";
 import EditProjectModalButton from "./EditProjectModalButton";
-import capitalizeLetters from "src/utils/capitalizeLetters";
 
 const createInfoListItems = (project) => [
   
-  { icon: <Avatar src={`${SERVER_URL}${project?.brand?.imgUrl}`} size={24} />, label: "brand", children: project.brand.title },
+  { icon: <Avatar src={`${SERVER_URL}${project?.brand?.imgUrl}`} size={24} />, label: "brand", children: project?.brand?.title },
   { icon: <IconUser />, label: "client", children: project?.client?.title },
   { icon: <IconBolt />, label: "type", children: <Badge color={project?.type?.color}>{project?.type?.title}</Badge> },
   { icon: <IconStatusChange />, label: "status", children: <Badge color={project?.status?.color}>{project?.status?.title}</Badge> },
+  { icon: <IconTransactionDollar />, label: "amount", children: <Badge color={project?.amount?.color}>{project?.amount}</Badge> },
 ];
 
 const ProjectDetails = () => {
@@ -59,12 +58,12 @@ const ProjectDetails = () => {
                 <DeleteProjectButton projectId={project.data._id} redirect />
               </Group>
 
-              {/* <Text size="xs" fw={500} mt={6}>
+              <Text size="xs" fw={500} mt={6}>
                 <Text component="span" c={"dimmed"}>
                   Project ID:
                 </Text>
-                {` ${project.data._id}`}
-              </Text> */}
+                {` ${project.data.projectId}`}
+              </Text>
 
               <Text size="xs" fw={500}>
                 <Text component="span" c={"dimmed"}>
@@ -101,12 +100,9 @@ const ProjectDetails = () => {
             </Text>
           </Paper>
 
-          <Tabs variant="pills" defaultValue="orders">
+          <Tabs variant="pills" defaultValue="tasks">
             <Paper p={4} mb={"md"}>
               <Tabs.List grow>
-                <Tabs.Tab value="orders" tt={"capitalize"}>
-                  orders
-                </Tabs.Tab>
 
                 <Tabs.Tab value="tasks" tt={"capitalize"}>
                   tasks
@@ -117,14 +113,6 @@ const ProjectDetails = () => {
                 </Tabs.Tab>
               </Tabs.List>
             </Paper>
-
-            <Tabs.Panel value="orders">
-              <Stack>
-                <AddOrderModalButton clientInfo={{ client: project.data.client._id, brand: project.data.brand._id, project: project.data._id }} />
-
-                <OrdersTable query={{ client: project.data.client._id }} hideColumns={["client", "brand",]} />
-              </Stack>
-            </Tabs.Panel>
 
             <Tabs.Panel value="tasks">
               <Stack>

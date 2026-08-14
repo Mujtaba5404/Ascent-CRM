@@ -13,6 +13,7 @@ import getAbbreviation from "src/utils/getAbbreviation";
 import DeleteTaskButton from "./DeleteTaskButton";
 import EditTaskModalButton from "./EditTaskModalButton";
 import SubTasksPopover from "./SubTasksPopover";
+import ENUMS from "src/constants/ENUMS";
 
 const TaskDetails = () => {
   const { id } = useParams();
@@ -49,7 +50,7 @@ const TaskDetails = () => {
                 <Text component="span" c={"dimmed"}>
                   Task ID:
                 </Text>
-                {` ${task.data._id}`}
+                {` ${task.data.taskId}`}
               </Text>
 
               <Text size="xs" fw={500}>
@@ -115,7 +116,7 @@ const TaskDetails = () => {
                     status
                   </Text>
 
-                  <Badge color={task.data.status?.color}>{task.data.status?.title}</Badge>
+                  <Badge color={task.data.status === ENUMS.TASK.STATUSES.OPEN ? "teal" : "red"}>{task.data.status}</Badge>
                 </Stack>
               </Group>
 

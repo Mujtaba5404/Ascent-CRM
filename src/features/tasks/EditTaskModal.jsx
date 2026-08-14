@@ -1,9 +1,11 @@
-import { ActionIcon, Button, Checkbox, Divider, Grid, Modal, ScrollArea, Stack, Textarea, TextInput, Tooltip } from "@mantine/core";
+import { ActionIcon, Button, Checkbox, Divider, Grid, Modal, ScrollArea, Select, Stack, Textarea, TextInput, Tooltip } from "@mantine/core";
 import { DatePickerInput } from "@mantine/dates";
 import { useForm } from "@mantine/form";
 import { IconMinus, IconPlus } from "@tabler/icons-react";
 import { Fragment } from "react";
 import { useUpdateTaskMutation } from "src/api/task";
+import Placeholder from "src/components/Placeholder";
+import ENUMS from "src/constants/ENUMS";
 import PicklistsSelect from "src/features/picklists/components/PicklistsSelect";
 import UsersMultiSelect from "src/features/users/UsersMultiSelect";
 import formatDate from "src/utils/formatDate";
@@ -17,8 +19,8 @@ const EditTaskModal = ({ isOpen = false, onClose = () => {}, compact = false, ta
       description: task?.description,
       subTasks: task?.subTasks?.length > 0 ? task.subTasks : [{ title: "Sub task 1", isCompleted: false }],
       priority: task?.priority?._id,
-      status: task?.status?._id,
-      assignedTo: task?.assignedTo?.map((a) => a._id),
+      status: task?.status,
+      assignees: task?.assignees?.map((a) => a._id),
       dueDate: task?.dueDate ? new Date(task?.dueDate?.split("T")[0]) : null,
     },
     transformValues: (values) => ({
@@ -88,16 +90,16 @@ const EditTaskModal = ({ isOpen = false, onClose = () => {}, compact = false, ta
             {!compact && <BasicFields />}
 
             <Grid.Col span={{ base: 12, sm: compact ? 12 : 6 }}>
-              <PicklistsSelect queryObject={{ resource: "Task", field: "priority" }} selectProps={{ label: "priority", ...form.getInputProps("priority") }} />
+              <PicklistsSelect queryObject={{ resource: "Task", field: "priority" }} selectProps={{ label: "priority", Placeholder:"Select Task Priority", ...form.getInputProps("priority") }} />
             </Grid.Col>
             <Grid.Col span={{ base: 12, sm: compact ? 12 : 6 }}>
-              <PicklistsSelect queryObject={{ resource: "Task", field: "status" }} selectProps={{ label: "status", ...form.getInputProps("status") }} />
+              <Select label="task status" placeholder="Select Task Status" data={Object.values(ENUMS.TASK.STATUSES)} {...form.getInputProps("status")} />
             </Grid.Col>
             <Grid.Col span={12}>
-              <UsersMultiSelect queryObject={{ brands: task.brand._id }} multiSelectProps={{ label: "assigned to", ...form.getInputProps("assignedTo") }} />
+              <UsersMultiSelect queryObject={{ brands: task.brand._id }} multiSelectProps={{ label: "assigned to", ...form.getInputProps("assignees") }} />
             </Grid.Col>
             <Grid.Col span={12}>
-              <DatePickerInput label="due date" {...form.getInputProps("dueDate")} />
+              <DatePickerInput label="due date" placeholder="Select Due Date" {...form.getInputProps("dueDate")} />
             </Grid.Col>
           </Grid>
 

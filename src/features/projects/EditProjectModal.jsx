@@ -10,6 +10,7 @@ import ClientsSelect from "../clients/ClientsSelect";
 import PicklistsTagsInput from "../picklists/components/PicklistsTagsInput";
 import UsersMultiSelect from "../users/UsersMultiSelect";
 import PicklistsMultiSelect from "../picklists/components/PicklistsMultiSelect";
+import Placeholder from "src/components/Placeholder";
 
 const EditProjectModal = ({ isOpen = false, onClose = () => {}, compact = false, project }) => {
   const updateProjectMutation = useUpdateProjectMutation();
@@ -22,7 +23,7 @@ const EditProjectModal = ({ isOpen = false, onClose = () => {}, compact = false,
       // client: project?.client?._id,
       status: project?.status?._id,
       type: project?.type?._id,
-      // amount: project?.amount,
+      amount: project?.amount,
       services: project?.services?.map((service) => service._id) || [],
       assignees: project?.assignees?.map((a) => a._id) || [],
       startDate: new Date(project?.startDate.split("T")[0]),
@@ -60,9 +61,9 @@ const EditProjectModal = ({ isOpen = false, onClose = () => {}, compact = false,
       {/* <Grid.Col span={{ base: 12, sm: 6 }}>
         <DateInput label="paymentDate" maxDate={new Date()} {...form.getInputProps("paymentDate")} />
       </Grid.Col> */}
-      {/* <Grid.Col span={{ base: 12, sm: 6 }}>
-        <NumberInput required label="amount" prefix="$" {...form.getInputProps("amount")} />
-      </Grid.Col> */}
+      <Grid.Col span={{ base: 12, sm: 6 }}>
+        <NumberInput required label="amount" prefix="$" placeholder="Enter Amount" {...form.getInputProps("amount")} />
+      </Grid.Col>
       <Grid.Col span={12}>
         <Textarea rows={3} label="description" {...form.getInputProps("description")} />
       </Grid.Col>
@@ -76,7 +77,7 @@ const EditProjectModal = ({ isOpen = false, onClose = () => {}, compact = false,
           {!compact && basicFields}
 
           <Grid.Col span={{ base: 12, sm: compact ? 12 : 8 }}>
-            <BrandsSelect selectProps={{ required: true, label: "brand", ...form.getInputProps("brand") }} />
+            <BrandsSelect selectProps={{ required: true, label: "brand", Placeholder: "Select Brand",...form.getInputProps("brand") }} />
           </Grid.Col>
 
           {/* <Grid.Col span={{ base: 12, sm: compact ? 12 : 6 }}>
@@ -84,18 +85,18 @@ const EditProjectModal = ({ isOpen = false, onClose = () => {}, compact = false,
           </Grid.Col> */}
 
           <Grid.Col span={{ base: 12, sm: compact ? 6 : 6 }}>
-            <PicklistsSelect queryObject={{ resource: "Project", field: "status" }} selectProps={{ label: "project status", ...form.getInputProps("status") }} />
+            <PicklistsSelect queryObject={{ resource: "Project", field: "status" }} selectProps={{ label: "project status", Placeholder: "Select Project Status", ...form.getInputProps("status") }} />
           </Grid.Col>
 
           <Grid.Col span={{ base: 12, sm: compact ? 6 : 6 }}>
-            <PicklistsSelect queryObject={{ resource: "Project", field: "type" }} selectProps={{ label: "project type", ...form.getInputProps("type") }} />
+            <PicklistsSelect queryObject={{ resource: "Project", field: "type" }} selectProps={{ label: "project type", Placeholder: "Select Project Type", ...form.getInputProps("type") }} />
           </Grid.Col>
 
-          <Grid.Col span={{ base: 12, sm: compact ? 6 : 6 }}>
-            <PicklistsMultiSelect queryObject={{ resource: "Order", field: "services" }} multiSelectProps={{label: "services", ...form.getInputProps("services")}}/>
+          <Grid.Col span={12}>
+            <PicklistsMultiSelect queryObject={{ resource: "Order", field: "services" }} multiSelectProps={{label: "services", Placeholder:"Select Services", ...form.getInputProps("services")}}/>
           </Grid.Col>
 
-          <Grid.Col span={{ base: 12, sm: compact ? 6 : 6 }}>
+          <Grid.Col span={12}>
             <UsersMultiSelect queryObject={form.getValues().brand && { brands: form.getValues().brand }} multiSelectProps={{ label: "assigned to", ...form.getInputProps("assignees") }} />
           </Grid.Col>
 

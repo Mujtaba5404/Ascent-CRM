@@ -9,7 +9,7 @@ const ClientsSelect = ({ selectProps = {}, queryObject = {} }) => {
     <Select
       data={clients.data}
       tt="capitalize"
-      selectLabel="title"
+      selectLabel="email"
       selectValue="_id"
       rightSection={clients.isLoading && <Loader size={18} />}
       {...selectProps}

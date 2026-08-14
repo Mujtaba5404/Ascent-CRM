@@ -3,6 +3,7 @@ import { DateInput } from "@mantine/dates";
 import { useForm } from "@mantine/form";
 import { useUpdateClientMutation } from "src/api/client";
 import { useGetPicklistByIdQuery } from "src/api/picklist";
+import Placeholder from "src/components/Placeholder";
 import BrandsSelect from "src/features/brands/BrandsSelect";
 import formatDate from "src/utils/formatDate";
 
@@ -42,10 +43,10 @@ const EditClientModal = ({ isOpen = false, onClose = () => {}, compact = false, 
   const basicFields = (
     <>
       <Grid.Col span={{ base: 12, sm: 6 }}>
-        <TextInput required label="client name" {...form.getInputProps("title")} />
+        <TextInput required label="client name" placeholder="Enter Client Name" {...form.getInputProps("title")} />
       </Grid.Col>
       <Grid.Col span={{ base: 12, sm: 6 }}>
-        <TextInput type="email" required label="client email" {...form.getInputProps("email")} />
+        <TextInput type="email" required label="client email" placeholder="Enter Client Email" {...form.getInputProps("email")} />
       </Grid.Col>
       <Grid.Col span={{ base: 12, sm: 6 }}>
         <TextInput type="tel" label="Client Phone" placeholder="Use / for multiple phones" tt={"initial"} {...form.getInputProps("phone")} onChange={handlePhone} />
@@ -53,13 +54,6 @@ const EditClientModal = ({ isOpen = false, onClose = () => {}, compact = false, 
     </>
   );
 
-  const extraFields = (
-    <>
-      {/* <Grid.Col span={12}>
-        <DateInput label="date" maxDate={new Date()} {...form.getInputProps("createdAt")} />
-      </Grid.Col> */}
-    </>
-  );
 
   return (
     <Modal size={compact ? "md" : "xl"} title={"update client"} tt={"capitalize"} opened={isOpen} onClose={onClose}>
@@ -68,10 +62,9 @@ const EditClientModal = ({ isOpen = false, onClose = () => {}, compact = false, 
           {!compact && basicFields}
 
           <Grid.Col span={{ base: 12, sm: compact ? 12 : 8 }}>
-            <BrandsSelect selectProps={{ required: true, label: "brand", ...form.getInputProps("brand") }} />
+            <BrandsSelect selectProps={{ required: true, label: "brand", Placeholder:"Select Brand", ...form.getInputProps("brand") }} />
           </Grid.Col>
 
-          {!compact && extraFields}
         </Grid>
 
         <Button type="submit" loading={updateClientMutation.isPending}>

@@ -6,6 +6,7 @@ import PicklistsSelect from "src/features/picklists/components/PicklistsSelect";
 import formatDate from "src/utils/formatDate";
 import ClientsSelect from "../clients/ClientsSelect";
 import PicklistsMultiSelect from "../picklists/components/PicklistsMultiSelect";
+import Placeholder from "src/components/Placeholder";
 
 const EditOrderModal = ({ isOpen = false, onClose = () => {}, compact = false, order }) => {
   const updateOrderMutation = useUpdateOrderMutation();
@@ -13,6 +14,7 @@ const EditOrderModal = ({ isOpen = false, onClose = () => {}, compact = false, o
   const form = useForm({
     initialValues: {
       client: order?.client._id,
+      brand: order?.brand._id,
       amount: order?.amount ?? 0,
       status: order?.status?._id ?? order?.status,
       services: order?.services?.map((s) => s._id || s) || [],
@@ -51,7 +53,7 @@ const EditOrderModal = ({ isOpen = false, onClose = () => {}, compact = false, o
           {!compact && basicFields}
 
           <Grid.Col span={{ base: 12, sm: 8 }}>
-            <PicklistsMultiSelect queryObject={{ resource: "Order", field: "services" }} multiSelectProps={{ label: "services", ...form.getInputProps("services") }} />
+            <PicklistsMultiSelect queryObject={{ resource: "Order", field: "services" }} multiSelectProps={{ label: "services", Placeholder:"Select Services", ...form.getInputProps("services") }} />
           </Grid.Col>
 
           <Grid.Col span={{ base: 12, sm: form.getValues().orderStatus ? 6 : 6 }}>

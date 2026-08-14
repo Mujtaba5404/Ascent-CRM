@@ -43,7 +43,7 @@ const DEFAULT_COLUMNS = (filters, setFilters) => [
   },
   {
     accessor: "orderId",
-    width: 180,
+    width: 250,
     textAlign: "center",
     sortable: true,
     filter: <TextInput size="xs" placeholder="Search orders by Id" value={filters.orderId} onChange={(e) => setFilters({ orderId: e.target.value })} />,

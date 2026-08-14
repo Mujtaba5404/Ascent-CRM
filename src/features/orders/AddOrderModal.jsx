@@ -7,6 +7,8 @@ import PicklistsSelect from "src/features/picklists/components/PicklistsSelect";
 import PicklistsTagsInput from "src/features/picklists/components/PicklistsTagsInput";
 import ClientsSelect from "../clients/ClientsSelect";
 import PicklistsMultiSelect from "../picklists/components/PicklistsMultiSelect";
+import BrandsSelect from "../brands/BrandsSelect";
+import Placeholder from "src/components/Placeholder";
 
 const AddOrderModal = ({ isOpen = false, onClose = () => {}, clientInfo = {} }) => {
   const createOrderMutation = useCreateOrderMutation();
@@ -16,6 +18,7 @@ const AddOrderModal = ({ isOpen = false, onClose = () => {}, clientInfo = {} }) 
   const form = useForm({
     initialValues: {
       client: clientInfo?.client || undefined,
+      brand: clientInfo?.brand || undefined,
       amount: 0,
       status: undefined,
       services: [],
@@ -35,7 +38,7 @@ const AddOrderModal = ({ isOpen = false, onClose = () => {}, clientInfo = {} }) 
     });
   };
 
-  const hasClientInfo = clientInfo?.client && clientInfo?.client;
+  const hasClientInfo = clientInfo?.client && clientInfo?.brand;
 
   return (
     <Modal size={"lg"} title={"create order"} tt={"capitalize"} opened={isOpen} onClose={onClose}>
@@ -43,16 +46,21 @@ const AddOrderModal = ({ isOpen = false, onClose = () => {}, clientInfo = {} }) 
         <Grid grow align="flex-end" tt={"capitalize"}>
           {!hasClientInfo && (
             <>
-              <Grid.Col span={{ base: 12, sm: form.getValues().brand ? 6 : 12 }}>
-                <ClientsSelect selectProps={{ required: true, label: "client", placeholder: "Select a client", ...form.getInputProps("client") }} />
+              <Grid.Col span={{ base: 12, sm: form.getValues().brand ? 6 : 6 }}>
+                <BrandsSelect selectProps={{ required: true, label: "brand", placeholder: "Select a brand", ...form.getInputProps("brand") }} />
+              </Grid.Col>
+              <Grid.Col span={{ base: 12, sm: form.getValues().brand ? 6 : 6 }}>
+                <ClientsSelect selectProps={{ required: true, label: "client", placeholder: "Select a client", ...form.getInputProps("client") }} 
+                queryObject={form.getValues().brand && { brand: form.getValues().brand }}
+                />
               </Grid.Col>
             </>
           )}
-          <Grid.Col span={{base: 12, sm: 6}}>
-            <PicklistsMultiSelect queryObject={{ resource: "Order", field: "services" }} multiSelectProps={{ label: "services", ...form.getInputProps("services") }} />
+          <Grid.Col span={{ base: 12, sm: 6 }}>
+            <PicklistsMultiSelect queryObject={{ resource: "Order", field: "services" }} multiSelectProps={{ label: "services", Placeholder:"Select Services", ...form.getInputProps("services") }} />
           </Grid.Col>
           <Grid.Col span={{ base: 12, sm: 6 }}>
-            <PicklistsSelect queryObject={{ resource: "Order", field: "status" }} selectProps={{ label: "Order Status", ...form.getInputProps("status") }} />
+            <PicklistsSelect queryObject={{ resource: "Order", field: "status" }} selectProps={{ label: "Order Status", Placeholder:"Select Status", ...form.getInputProps("status") }} />
           </Grid.Col>
           <Grid.Col span={{ base: 12, sm: 6 }}>
             <NumberInput required label="amount" prefix="$" {...form.getInputProps("amount")} />

@@ -3,6 +3,7 @@ import { useForm } from "@mantine/form";
 import { Country } from "country-state-city";
 import { useNavigate } from "react-router-dom";
 import { useCreateClientMutation } from "src/api/client";
+import Placeholder from "src/components/Placeholder";
 import BrandsSelect from "src/features/brands/BrandsSelect";
 
 const COUNTRIES = Country.getAllCountries(); // TODO: decide to either introduce country or not
@@ -43,16 +44,16 @@ const AddClientModal = ({ isOpen = false, onClose = () => {} }) => {
         <ScrollArea.Autosize mah={450} scrollbars="y">
           <Grid grow align="flex-end">
             <Grid.Col span={{ base: 12, sm: 6 }}>
-              <TextInput required label="client name" {...form.getInputProps("title")} />
+              <TextInput required label="client name" placeholder="Enter Client Name" {...form.getInputProps("title")} />
             </Grid.Col>
             <Grid.Col span={{ base: 12, sm: 6 }}>
-              <TextInput type="email" required label="client email" {...form.getInputProps("email")} />
+              <TextInput type="email" required label="client email" placeholder="Enter Client Email" {...form.getInputProps("email")} />
             </Grid.Col>
             <Grid.Col span={{ base: 12, sm: 6 }}>
               <TextInput type="tel" label="Client Phone" placeholder="Use / for multiple phones" tt={"initial"} {...form.getInputProps("phone")} onChange={handlePhone} />
             </Grid.Col>
             <Grid.Col span={{ base: 12, sm: 8 }}>
-              <BrandsSelect selectProps={{ required: true, label: "brand", ...form.getInputProps("brand") }} />
+              <BrandsSelect selectProps={{ required: true, label: "brand", Placeholder:"Select Brand", ...form.getInputProps("brand") }} />
             </Grid.Col>
           </Grid>
         </ScrollArea.Autosize>

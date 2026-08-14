@@ -16,6 +16,7 @@ export const useGetClientsWithPaginationQuery = (params) => {
     queryFn: () => api.get("clients", { params }).then(({ data }) => data),
   });
 };
+
 export const useGetClientsByBrandQuery = (brandId) => {
   return useQuery({
     queryKey: ["clients", "by brand", brandId],

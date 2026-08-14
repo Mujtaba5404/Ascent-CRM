@@ -1,5 +1,5 @@
-import { Avatar, Badge, Grid, Group, Loader, Paper, Stack, Tabs, Text, Tooltip } from "@mantine/core";
-import { IconActivityHeartbeat, IconAt, IconBolt, IconCalendarEvent, IconNote, IconPhone, IconUser, IconUserDollar, IconX } from "@tabler/icons-react";
+import { Avatar, Grid, Group, Loader, Paper, Stack, Tabs, Text, Tooltip } from "@mantine/core";
+import { IconAt, IconCalendarEvent, IconNote, IconPhone, IconUserDollar, IconX } from "@tabler/icons-react";
 import { truncate } from "lodash";
 import { useParams } from "react-router-dom";
 import { useGetClientByIdQuery } from "src/api/client";
@@ -7,20 +7,18 @@ import InfoList from "src/components/InfoList";
 import Placeholder from "src/components/Placeholder";
 import { SERVER_URL } from "src/constants/SERVER_URL";
 import CommentBox from "src/features/comments/CommentBox";
-import AddOrderModalButton from "src/features/orders/AddOrderModalButton";
-import OrdersTable from "src/features/orders/OrdersTable";
 import AddTaskModalButton from "src/features/tasks/AddTaskModalButton";
 import TasksTable from "src/features/tasks/TasksTable";
 import classes from "src/index.module.css";
+import capitalizeLetters from "src/utils/capitalizeLetters";
 import formatAmount from "src/utils/formatAmount";
 import formatDate from "src/utils/formatDate";
 import formatPhone from "src/utils/formatPhone";
 import getAbbreviation from "src/utils/getAbbreviation";
-import DeleteClientButton from "./DeleteClientButton";
-import EditClientModalButton from "./EditClientModalButton";
 import AddProjectModalButton from "../projects/AddProjectModalButton";
 import ProjectsTable from "../projects/ProjectsTable";
-import capitalizeLetters from "src/utils/capitalizeLetters";
+import DeleteClientButton from "./DeleteClientButton";
+import EditClientModalButton from "./EditClientModalButton";
 
 const createInfoListItems = (client) => [
   {
@@ -34,8 +32,8 @@ const createInfoListItems = (client) => [
   },
   { icon: <IconPhone />, label: "phone", children: formatPhone(client.phone) },
   { icon: <Avatar src={`${SERVER_URL}${client.brand.imgUrl}`} size={24} />, label: "brand", children: client.brand.title },
-  { icon: <IconCalendarEvent />, label: "lastOrderDate", children: formatDate(client?.orderMetrics?.lastOrderDate) },
-  { icon: <IconUserDollar />, label: "worth", children: formatAmount(client?.orderMetrics?.totalAmount || 0) },
+  { icon: <IconCalendarEvent />, label: "lastOrderDate", children: formatDate(client?.projectMetrics?.lastOrderDate) },
+  { icon: <IconUserDollar />, label: "worth", children: formatAmount(client?.projectMetrics?.totalAmount || 0) },
 ];
 
 const ClientDetails = () => {
@@ -119,9 +117,6 @@ const ClientDetails = () => {
                 <Tabs.Tab value="projects" tt={"capitalize"}>
                   projects
                 </Tabs.Tab>
-                <Tabs.Tab value="orders" tt={"capitalize"}>
-                  orders
-                </Tabs.Tab>
 
                 <Tabs.Tab value="tasks" tt={"capitalize"}>
                   tasks
@@ -138,13 +133,6 @@ const ClientDetails = () => {
                 <AddProjectModalButton clientInfo={{ brand: client.data.brand._id, client: client.data._id }} />
 
                 <ProjectsTable query={{ client: id }} hideColumns={["client", "brand", "accountManager"]} />
-              </Stack>
-            </Tabs.Panel>
-            <Tabs.Panel value="orders">
-              <Stack>
-                <AddOrderModalButton clientInfo={{ brand: client.data.brand._id, client: client.data._id }} />
-
-                <OrdersTable query={{ client: id }} hideColumns={["client", "brand", "accountManager"]} />
               </Stack>
             </Tabs.Panel>
 

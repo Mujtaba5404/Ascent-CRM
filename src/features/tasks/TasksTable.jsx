@@ -16,6 +16,7 @@ import TasksTableRowMenu from "./TasksTableRowMenu";
 import SubTasksPopover from "./SubTasksPopover";
 import CommentPopover from "../comments/CommentPopover";
 import capitalizeLetters from "src/utils/capitalizeLetters";
+import ENUMS from "src/constants/ENUMS";
 
 const DEFAULT_COLUMNS = (filters, setFilters) => [
   {
@@ -42,6 +43,15 @@ const DEFAULT_COLUMNS = (filters, setFilters) => [
     render: (row) => formatDate(row.createdAt),
   },
   {
+      accessor: "taskId",
+      width: 250,
+      textAlign: "center",
+      sortable: true,
+      filter: <TextInput size="xs" placeholder="Search orders by Id" value={filters.taskId} onChange={(e) => setFilters({ taskId: e.target.value })} />,
+      filtering: filters?.taskId,
+      render: (row) => <Badge>{row?.taskId}</Badge>,
+    },
+  {
     accessor: "title",
     width: 180,
     ellipsis: true,
@@ -66,7 +76,7 @@ const DEFAULT_COLUMNS = (filters, setFilters) => [
             {row.client.title}
           </Text>
           <Text size="xs" c={"dimmed"} title={row.client.email}>
-            {truncate(row.client.email, { length: 30 })}
+            {truncate(row.client.email, { length: 28 })}
           </Text>
         </div>
       </Group>
@@ -104,8 +114,8 @@ const DEFAULT_COLUMNS = (filters, setFilters) => [
     render: (row) => <SubTasksPopover subtasks={row.subTasks} />,
   },
   {
-    accessor: "Task status",
-    width: 175,
+    accessor: "status",
+    width: 150,
     textAlign: "center",
     filter: (
       <PicklistsMultiSelect
@@ -120,11 +130,11 @@ const DEFAULT_COLUMNS = (filters, setFilters) => [
       />
     ),
     filtering: filters.status?.length,
-    render: (row) => <Badge color={row.status?.color}>{row.status?.title}</Badge>,
+    render: (row) => <Badge color={row.status === ENUMS.TASK.STATUSES.OPEN ? "teal" : "red"}>{row.status}</Badge>,
   },
   {
-    accessor: "Task priority",
-    width: 175,
+    accessor: "priority",
+    width: 150,
     textAlign: "center",
     filter: (
       <PicklistsMultiSelect
@@ -159,18 +169,18 @@ const DEFAULT_COLUMNS = (filters, setFilters) => [
   //   ),
   // },
   {
-    accessor: "startDate",
-    title: "Start Date",
+    accessor: "dueDate",
+    title: "Due Date",
     width: 130,
     textAlign: "center",
     sortable: true,
     filter: ({ close }) => (
       <Stack gap="xs">
-        <DatePicker size="xs" type="range" value={filters.startDate} onChange={(value) => setFilters({ startDate: value })} />
+        <DatePicker size="xs" type="range" value={filters.dueDate} onChange={(value) => setFilters({ dueDate: value })} />
         <Button
           size="xs"
           onClick={() => {
-            setFilters({ startDate: [] });
+            setFilters({ dueDate: [] });
             close();
           }}
         >
@@ -178,32 +188,10 @@ const DEFAULT_COLUMNS = (filters, setFilters) => [
         </Button>
       </Stack>
     ),
-    filtering: filters.startDate?.length,
-    render: (row) => (row.startDate ? formatDate(row.startDate) : "-"),
+    filtering: filters.dueDate?.length,
+    render: (row) => (row.dueDate ? formatDate(row.dueDate) : "-"),
   },
-  {
-    accessor: "endDate",
-    title: "End Date",
-    width: 120,
-    textAlign: "center",
-    sortable: true,
-    filter: ({ close }) => (
-      <Stack gap="xs">
-        <DatePicker size="xs" type="range" value={filters.endDate} onChange={(value) => setFilters({ endDate: value })} />
-        <Button
-          size="xs"
-          onClick={() => {
-            setFilters({ endDate: [] });
-            close();
-          }}
-        >
-          Clear
-        </Button>
-      </Stack>
-    ),
-    filtering: filters.endDate?.length,
-    render: (row) => (row.endDate ? formatDate(row.endDate) : "-"),
-  },
+
   {
     accessor: "assignees",
     title: "Assigned To",

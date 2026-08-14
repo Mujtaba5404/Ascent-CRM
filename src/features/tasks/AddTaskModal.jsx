@@ -1,4 +1,4 @@
-import { ActionIcon, Button, Checkbox, Divider, Grid, Modal, ScrollArea, Stack, Textarea, TextInput, Tooltip } from "@mantine/core";
+import { ActionIcon, Button, Checkbox, Divider, Grid, Modal, ScrollArea, Select, Stack, Textarea, TextInput, Tooltip } from "@mantine/core";
 import { DatePickerInput } from "@mantine/dates";
 import { useForm } from "@mantine/form";
 import { IconMinus, IconPlus } from "@tabler/icons-react";
@@ -10,6 +10,8 @@ import UsersMultiSelect from "src/features/users/UsersMultiSelect";
 import formatDate from "src/utils/formatDate";
 import ClientsSelect from "../clients/ClientsSelect";
 import ProjectsSelect from "../projects/ProjectsSelect";
+import Placeholder from "src/components/Placeholder";
+import ENUMS from "src/constants/ENUMS";
 
 const AddTaskModal = ({ isOpen = false, onClose = () => {}, clientInfo = {} }) => {
   const createTaskMutation = useCreateTaskMutation();
@@ -26,8 +28,7 @@ const AddTaskModal = ({ isOpen = false, onClose = () => {}, clientInfo = {} }) =
       priority: undefined,
       status: undefined,
       assignees: [],
-      startDate: new Date(),
-      endDate: new Date(),
+      dueDate: new Date(),
     },
     transformValues: ({ brand, ...values }) => ({ ...values }),
   });
@@ -39,7 +40,7 @@ const AddTaskModal = ({ isOpen = false, onClose = () => {}, clientInfo = {} }) =
   });
 
   const handleSubmit = (values) => {
-    const payload = { ...values, startDate: formatDate(values.startDate, "YYYY-MM-DD"), endDate: formatDate(values.endDate, "YYYY-MM-DD") };
+    const payload = { ...values, dueDate: formatDate(values.dueDate, "YYYY-MM-DD") };
 
     createTaskMutation.mutate(payload, {
       onSuccess: ({ data }) => navigate(`/tasks/${data._id}`),
@@ -92,33 +93,36 @@ const AddTaskModal = ({ isOpen = false, onClose = () => {}, clientInfo = {} }) =
             {!hasClientInfo && (
               <>
                 <Grid.Col span={{ base: 12, sm: 6 }}>
-                  <ClientsSelect selectProps={{ required: true, label: "select client", selectLabel: "title", ...form.getInputProps("client") }} brandId={form.getValues().brand} />
+                  <ClientsSelect
+                    selectProps={{ required: true, label: "select client", selectLabel: "title", Placeholder: "Select Client", ...form.getInputProps("client") }}
+                    brandId={form.getValues().brand}
+                  />
                 </Grid.Col>
                 <Grid.Col span={{ base: 12, sm: 6 }}>
                   <ProjectsSelect
-                    selectProps={{ label: "select project", selectLabel: "title", ...form.getInputProps("project") }}
+                    selectProps={{ label: "select project", selectLabel: "title", Placeholder: "Select Project", ...form.getInputProps("project") }}
                     queryObject={form.getValues().client && { client: form.getValues().client }}
                   />
                 </Grid.Col>
               </>
             )}
             <Grid.Col span={12}>
-              <TextInput label="title" {...form.getInputProps("title")} />
+              <TextInput label="title" placeholder="Enter Task Title" {...form.getInputProps("title")} />
             </Grid.Col>
             <Grid.Col span={{ base: 12, sm: 6 }}>
-              <PicklistsSelect queryObject={{ resource: "Task", field: "priority" }} selectProps={{ label: "priority", ...form.getInputProps("priority") }} />
+              <PicklistsSelect queryObject={{ resource: "Task", field: "priority" }} selectProps={{ label: "priority", Placeholder: "Select Task Priority", ...form.getInputProps("priority") }} />
             </Grid.Col>
             <Grid.Col span={{ base: 12, sm: 6 }}>
-              <PicklistsSelect queryObject={{ resource: "Task", field: "status" }} selectProps={{ label: "status", ...form.getInputProps("status") }} />
+              <Select label="task status" placeholder="Select Task Status" data={Object.values(ENUMS.TASK.STATUSES)} {...form.getInputProps("status")} />
             </Grid.Col>
             <Grid.Col span={12}>
-              <UsersMultiSelect queryObject={{ brands: form.getValues().brand }} multiSelectProps={{ label: "assigned to", ...form.getInputProps("assignees") }} />
+              <UsersMultiSelect queryObject={{ brands: form.getValues().brand }} multiSelectProps={{ label: "assigned to", Placeholder: "Select Assignees", ...form.getInputProps("assignees") }} />
             </Grid.Col>
-            <Grid.Col span={{ base: 12, sm: 6 }}>
+            {/* <Grid.Col span={{ base: 12, sm: 6 }}>
               <DatePickerInput label="start date" {...form.getInputProps("startDate")} />
-            </Grid.Col>
+            </Grid.Col> */}
             <Grid.Col span={{ base: 12, sm: 6 }}>
-              <DatePickerInput label="end date" minDate={form.getValues().startDate} {...form.getInputProps("endDate")} />
+              <DatePickerInput label="due date" {...form.getInputProps("dueDate")} />
             </Grid.Col>
             <Grid.Col span={12}>
               <Textarea label="description" rows={3} {...form.getInputProps("description")} />

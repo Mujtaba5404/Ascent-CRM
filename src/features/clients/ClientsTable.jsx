@@ -44,7 +44,7 @@ const DEFAULT_COLUMNS = (filters, setFilters) => [
   },
   {
     accessor: "clientId",
-    width: 200,
+    width: 250,
     textAlign: "center",
     sortable: true,
     filter: <TextInput size="xs" placeholder="Search clients by Id" value={filters.clientId} onChange={(e) => setFilters({ clientId: e.target.value })} />,
@@ -67,7 +67,7 @@ const DEFAULT_COLUMNS = (filters, setFilters) => [
               {row.title}
             </Text>
             <Text size="xs" c={"dimmed"} title={row.email}>
-              {truncate(row.email, { length: 30 })}
+              {truncate(row.email, { length: 28 })}
             </Text>
           </div>
         </Group>
@@ -121,7 +121,7 @@ const DEFAULT_COLUMNS = (filters, setFilters) => [
     accessor: "worth",
     width: 125,
     textAlign: "center",
-    render: (row) => formatAmount(row?.orderMetrics?.totalAmount || 0),
+    render: (row) => formatAmount(row?.projectMetrics?.totalAmount || 0),
   },
   {
     accessor: "phone",

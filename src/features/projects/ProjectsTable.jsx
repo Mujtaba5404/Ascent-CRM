@@ -20,6 +20,7 @@ import PicklistsTagsInput from "../picklists/components/PicklistsTagsInput";
 import UsersMultiSelect from "../users/UsersMultiSelect";
 import ProjectsTableRowMenu from "./ProjectsTableRowMenu";
 import BadgesPopover from "src/components/BadgesPopover";
+import formatAmount from "src/utils/formatAmount";
 
 const DEFAULT_COLUMNS = (filters, setFilters) => [
   {
@@ -61,7 +62,7 @@ const DEFAULT_COLUMNS = (filters, setFilters) => [
               {row.client?.title}
             </Text>
             <Text size="xs" c={"dimmed"} title={row.email}>
-              {truncate(row.client?.email, { length: 30 })}
+              {truncate(row.client?.email, { length: 28 })}
             </Text>
           </div>
         </Group>
@@ -78,7 +79,7 @@ const DEFAULT_COLUMNS = (filters, setFilters) => [
   },
   {
     accessor: "services",
-    width: 175,
+    width: 200,
     ellipsis: true,
     textAlign: "center",
     filter: (
@@ -139,6 +140,12 @@ const DEFAULT_COLUMNS = (filters, setFilters) => [
     ),
   },
   {
+    accessor:"amount",
+    width:150,
+    textAlign:"center",
+    render: (row) => formatAmount(row.amount),
+  },
+  {
     accessor: "status",
     width: 150,
     textAlign: "center",
@@ -157,18 +164,66 @@ const DEFAULT_COLUMNS = (filters, setFilters) => [
     filtering: filters.status?.length,
     render: (row) => <Badge color={row?.status?.color}>{row?.status?.title}</Badge>,
   },
+  // {
+  //   accessor: "startDate",
+  //   width: 120,
+  //   textAlign: "center",
+  //   sortable: true,
+  //   render: (row) => formatDate(row.startDate),
+  // },
+  // {
+  //   accessor: "endDate",
+  //   width: 120,
+  //   textAlign: "center",
+  //   sortable: true,
+  //   render: (row) => formatDate(row.endDate),
+  // },
   {
     accessor: "startDate",
-    width: 120,
+    title: "Start Date",
+    width: 160,
     textAlign: "center",
     sortable: true,
+    filter: ({ close }) => (
+      <Stack gap="xs">
+        <DatePicker size="xs" value={filters.startDate} onChange={(value) => setFilters({ startDate: value })} />
+
+        <Button
+          size="xs"
+          onClick={() => {
+            setFilters({ startDate: null });
+            close();
+          }}
+        >
+          Clear
+        </Button>
+      </Stack>
+    ),
+    filtering: !!filters.startDate,
     render: (row) => formatDate(row.startDate),
   },
   {
     accessor: "endDate",
-    width: 120,
+    title: "End Date",
+    width: 160,
     textAlign: "center",
     sortable: true,
+    filter: ({ close }) => (
+      <Stack gap="xs">
+        <DatePicker size="xs" value={filters.endDate} onChange={(value) => setFilters({ endDate: value })} />
+
+        <Button
+          size="xs"
+          onClick={() => {
+            setFilters({ endDate: null });
+            close();
+          }}
+        >
+          Clear
+        </Button>
+      </Stack>
+    ),
+    filtering: !!filters.endDate,
     render: (row) => formatDate(row.endDate),
   },
   {

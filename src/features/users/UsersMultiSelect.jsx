@@ -14,7 +14,7 @@ const UsersMultiSelect = ({ multiSelectProps = {}, queryObject = {} }) => {
       tt="capitalize"
       selectLabel="name"
       selectValue="_id"
-      placeholder={upperFirst("select users")}
+      placeholder={upperFirst("select Users")}
       rightSection={users.isLoading && <Loader size={18} />}
       {...multiSelectProps}
       {...(users.isError && { disabled: true, placeholder: "Error loading users" })}
