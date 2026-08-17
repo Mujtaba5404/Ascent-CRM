@@ -101,7 +101,7 @@ const ProjectDetails = () => {
           </Paper>
 
           <Tabs variant="pills" defaultValue="tasks">
-            <Paper p={4} mb={"md"}>
+            {/* <Paper p={4} mb={"md"}>
               <Tabs.List grow>
 
                 <Tabs.Tab value="tasks" tt={"capitalize"}>
@@ -112,15 +112,15 @@ const ProjectDetails = () => {
                   comments
                 </Tabs.Tab>
               </Tabs.List>
-            </Paper>
+            </Paper> */}
 
-            <Tabs.Panel value="tasks">
+            {/* <Tabs.Panel value="tasks">
               <Stack>
                 <AddTaskModalButton clientInfo={{ client: project.data.client._id, brand: project.data.brand._id, project: project.data._id }} />
 
                 <TasksTable query={{ project: id }} hideColumns={["project"]} />
               </Stack>
-            </Tabs.Panel>
+            </Tabs.Panel> */}
 
             <Tabs.Panel value="comments">
               <CommentBox resource="Project" resourceId={id} />

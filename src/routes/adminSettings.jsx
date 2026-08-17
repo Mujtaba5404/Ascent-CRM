@@ -5,10 +5,12 @@ import Roles from "src/features/roles/Roles";
 import Users from "src/features/users/Users";
 import AdminSettings from "src/pages/AdminSettings";
 import { picklistRoutes } from "./picklists";
+import BaseCamp from "src/features/basecamp/BaseCamp";
 
 export const adminSettingsRoutes = (
   <Route path="admin-settings" element={<AdminSettings />}>
-    <Route index element={<Companies />} />
+    <Route index element={<BaseCamp />} />
+    <Route path="basecamp" element={<BaseCamp />} />
     <Route path="companies" element={<Companies />} />
     <Route path="brands" element={<Brands />} />
     <Route path="users" element={<Users />} />

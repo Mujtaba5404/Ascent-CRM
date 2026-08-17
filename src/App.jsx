@@ -25,10 +25,10 @@ const App = () => {
           {/* {marketingRoutes} */}
 
           {/* {leadRoutes} */}
-          
-          {projectRoutes}
 
           {clientRoutes}
+          
+          {projectRoutes}
 
           {orderRoutes}
 

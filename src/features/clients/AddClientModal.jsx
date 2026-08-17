@@ -1,9 +1,8 @@
-import { Button, Grid, Modal, ScrollArea, Stack, Textarea, TextInput } from "@mantine/core";
+import { Button, Grid, Modal, ScrollArea, Stack, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { Country } from "country-state-city";
 import { useNavigate } from "react-router-dom";
 import { useCreateClientMutation } from "src/api/client";
-import Placeholder from "src/components/Placeholder";
 import BrandsSelect from "src/features/brands/BrandsSelect";
 
 const COUNTRIES = Country.getAllCountries(); // TODO: decide to either introduce country or not

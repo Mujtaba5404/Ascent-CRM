@@ -1,10 +1,11 @@
 import { Avatar, Badge, Button, Group, Stack, Text, TextInput, UnstyledButton } from "@mantine/core";
-import AvatarGroup from "src/components/AvatarGroup";
 import { DatePicker } from "@mantine/dates";
 import { useLocalStorage } from "@mantine/hooks";
 import { truncate } from "lodash";
 import { Link } from "react-router-dom";
 import { useGetProjectsWithPaginationQuery } from "src/api/project";
+import AvatarGroup from "src/components/AvatarGroup";
+import BadgesPopover from "src/components/BadgesPopover";
 import PaginatedTable from "src/components/PaginatedTable";
 import { SERVER_URL } from "src/constants/SERVER_URL";
 import BrandsMultiSelect from "src/features/brands/BrandsMultiSelect";
@@ -12,15 +13,13 @@ import CommentPopover from "src/features/comments/CommentPopover";
 import PicklistsMultiSelect from "src/features/picklists/components/PicklistsMultiSelect";
 import useFilters from "src/hooks/useFilters";
 import capitalizeLetters from "src/utils/capitalizeLetters";
+import formatAmount from "src/utils/formatAmount";
 import formatDate from "src/utils/formatDate";
 import formatPhone from "src/utils/formatPhone";
 import getAbbreviation from "src/utils/getAbbreviation";
 import CompaniesMultiSelect from "../companies/CompaniesMultiSelect";
-import PicklistsTagsInput from "../picklists/components/PicklistsTagsInput";
 import UsersMultiSelect from "../users/UsersMultiSelect";
 import ProjectsTableRowMenu from "./ProjectsTableRowMenu";
-import BadgesPopover from "src/components/BadgesPopover";
-import formatAmount from "src/utils/formatAmount";
 
 const DEFAULT_COLUMNS = (filters, setFilters) => [
   {
@@ -66,7 +65,7 @@ const DEFAULT_COLUMNS = (filters, setFilters) => [
             </Text>
           </div>
         </Group>
-      </UnstyledButton>
+      </UnstyledButton> 
     ),
   },
   {
@@ -164,20 +163,6 @@ const DEFAULT_COLUMNS = (filters, setFilters) => [
     filtering: filters.status?.length,
     render: (row) => <Badge color={row?.status?.color}>{row?.status?.title}</Badge>,
   },
-  // {
-  //   accessor: "startDate",
-  //   width: 120,
-  //   textAlign: "center",
-  //   sortable: true,
-  //   render: (row) => formatDate(row.startDate),
-  // },
-  // {
-  //   accessor: "endDate",
-  //   width: 120,
-  //   textAlign: "center",
-  //   sortable: true,
-  //   render: (row) => formatDate(row.endDate),
-  // },
   {
     accessor: "startDate",
     title: "Start Date",
