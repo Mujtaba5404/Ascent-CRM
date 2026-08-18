@@ -27,12 +27,6 @@ import LeadSources from "src/features/picklists/features/LeadSources";
 import Locations from "src/features/picklists/features/Locations";
 import MaintenanceStatus from "src/features/picklists/features/MaintenanceStatus";
 import MarketingPlatforms from "src/features/picklists/features/MarketingPlatforms";
-import OrderPaymentGateways from "src/features/picklists/features/OrderPaymentGateways";
-import OrderServices from "src/features/picklists/features/OrderServices";
-import OrderStages from "src/features/picklists/features/OrderStages";
-import OrderStatuses from "src/features/picklists/features/OrderStatuses";
-import ProjectType from "src/features/picklists/features/ProjectType";
-import ProjectStatus from "src/features/picklists/features/ProjectStatus";
 import ProcurementBanks from "src/features/picklists/features/ProcurementBanks";
 import ProcurementBillingStatus from "src/features/picklists/features/ProcurementBillingStatus";
 import ProcurementCategories from "src/features/picklists/features/ProcurementCategories";
@@ -42,6 +36,9 @@ import ProcurementPaymentStatus from "src/features/picklists/features/Procuremen
 import ProcurementPriorities from "src/features/picklists/features/ProcurementPriorities";
 import ProcurementStatus from "src/features/picklists/features/ProcurementStatus";
 import ProcurementTaxChallanStatus from "src/features/picklists/features/ProcurementTaxChallanStatus";
+import ProjectServices from "src/features/picklists/features/ProjectServices";
+import ProjectStatus from "src/features/picklists/features/ProjectStatus";
+import ProjectType from "src/features/picklists/features/ProjectType";
 import SittingCostHeads from "src/features/picklists/features/SittingCostHeads";
 import SubscriptionServiceProviders from "src/features/picklists/features/SubscriptionServiceProviders";
 import SubscriptionServices from "src/features/picklists/features/SubscriptionServices";
@@ -92,10 +89,7 @@ export const picklistRoutes = (
     <Route path="locations" element={<Locations />} />
     <Route path="maintenance-status" element={<MaintenanceStatus />} />
     <Route path="marketing-platforms" element={<MarketingPlatforms />} />
-    <Route path="order-payment-gateways" element={<OrderPaymentGateways />} />
-    <Route path="order-services" element={<OrderServices />} />
-    <Route path="order-stages" element={<OrderStages />} />
-    <Route path="order-statuses" element={<OrderStatuses />} />
+    <Route path="project-services" element={<ProjectServices />} />
     <Route path="project-status" element={<ProjectStatus />} />
     <Route path="project-type" element={<ProjectType />} />
     <Route path="procurement-banks" element={<ProcurementBanks />} />

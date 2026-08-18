@@ -100,7 +100,7 @@ const ProjectDetails = () => {
             </Text>
           </Paper>
 
-          <Tabs variant="pills" defaultValue="tasks">
+          <Tabs variant="pills" defaultValue="comments">
             {/* <Paper p={4} mb={"md"}>
               <Tabs.List grow>
 

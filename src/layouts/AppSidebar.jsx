@@ -1,12 +1,11 @@
 import { Stack } from "@mantine/core";
-import { IconBrandBandcamp, IconBrandProducthunt, IconUserDollar } from "@tabler/icons-react";
+import { IconBriefcase, IconFolderCog, IconUserDollar } from "@tabler/icons-react";
 import CanAccess from "src/components/CanAccess";
 import AppSidebarLink from "./AppSidebarLink";
 
 const links = [
-  // { title: "baseCamps", path: "/baseCamps", resource: "basecamp", icon: <IconBrandBandcamp size={20} /> },
   { title: "clients", path: "/clients", resource: "client", icon: <IconUserDollar size={20} /> },
-  { title: "projects", path: "/projects", resource: "project", icon: <IconBrandProducthunt size={20} /> },
+  { title: "projects", path: "/projects", resource: "project", icon: <IconFolderCog size={20} /> },
   // { title: "tasks", path: "/tasks", resource: "task", icon: <IconListCheck size={20} /> },
 ];
 

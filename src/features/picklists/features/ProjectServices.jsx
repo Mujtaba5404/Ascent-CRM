@@ -1,8 +1,8 @@
 import Picklists from "src/features/picklists/Picklists";
 
-const OrderServices = () => {
+const ProjectServices = () => {
   return (
-    <Picklists featureName="order service" resource="Order" field="services">
+    <Picklists featureName="project services" resource="Project" field="services">
       <Picklists.AddButton />
 
       <Picklists.Modal fieldsConfig={{ color: false, isDefault: false }} />
@@ -12,4 +12,4 @@ const OrderServices = () => {
   );
 };
 
-export default OrderServices;
+export default ProjectServices;

@@ -1,14 +1,13 @@
-import { Avatar, Group, Paper, SimpleGrid, Stack, Text } from "@mantine/core";
+import { Avatar, Badge, Group, Paper, SimpleGrid, Stack, Text } from "@mantine/core";
 import { truncate } from "lodash";
 import { SERVER_URL } from "src/constants/SERVER_URL";
 import DeleteBaseCampButton from "./DeleteBaseCampButton";
-import EditBaseCampModalButton from "./EditBaseCampModalButton";
 
 const BaseCampList = ({ basecamps = [] }) => {
   return (
     <SimpleGrid cols={{ base: 1, sm: 2, lg: 3, xl: 4 }}>
       {basecamps.map((basecamp) => {
-        const title = basecamp.company?.title ?? basecamp.accountName;
+        const title = basecamp.company?.title ?? basecamp.accountName ?? basecamp.accountId;
         const acronym = basecamp.company?.acronym;
 
         return (
@@ -19,17 +18,23 @@ const BaseCampList = ({ basecamps = [] }) => {
                   {acronym}
                 </Avatar>
 
-                <Stack gap={0}>
+                <Stack gap={4}>
                   <Text fw={500} tt={"capitalize"} title={title}>
                     {truncate(title, { length: 20 })}
                   </Text>
+
                   <Text size="xs" c={"dimmed"}>
                     {basecamp.accountName}
                   </Text>
+
+                  {basecamp.accountId && (
+                    <Badge size="xs" variant="light" w="fit-content">
+                      {basecamp.accountId}
+                    </Badge>
+                  )}
                 </Stack>
               </Group>
 
-              <EditBaseCampModalButton basecamp={basecamp} />
               <DeleteBaseCampButton basecampId={basecamp._id} />
             </Group>
           </Paper>

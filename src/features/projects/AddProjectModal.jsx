@@ -1,14 +1,15 @@
 import { Button, Fieldset, Grid, Modal, NumberInput, ScrollArea, SegmentedControl, Stack, Textarea, TextInput } from "@mantine/core";
-import { DateInput, DatePickerInput } from "@mantine/dates";
+import { DatePickerInput } from "@mantine/dates";
 import { useForm } from "@mantine/form";
 import { useNavigate } from "react-router-dom";
 import { useCreateProjectMutation } from "src/api/project";
 import BrandsSelect from "src/features/brands/BrandsSelect";
 import PicklistsSelect from "src/features/picklists/components/PicklistsSelect";
+import BaseCampSelect from "../basecamp/BaseCampSelect";
+import BaseCampTemplateSelect from "../basecamp/BaseCampTemplateSelect";
 import ClientsSelect from "../clients/ClientsSelect";
 import PicklistsMultiSelect from "../picklists/components/PicklistsMultiSelect";
 import UsersMultiSelect from "../users/UsersMultiSelect";
-import Placeholder from "src/components/Placeholder";
 
 const CLIENT_MODES = [
   { label: "Existing", value: "existing" },
@@ -37,6 +38,8 @@ const AddProjectModal = ({ isOpen = false, onClose = () => {} }) => {
       endDate: new Date(),
       type: undefined,
       status: undefined,
+      basecamp: undefined,
+      template: undefined,
       services: [],
       assignees: [],
     },
@@ -118,6 +121,17 @@ const AddProjectModal = ({ isOpen = false, onClose = () => {} }) => {
                 </Grid.Col>
 
                 <Grid.Col span={{ base: 12, sm: 6 }}>
+                  <BaseCampSelect selectProps={{ label: "Basecamps", placeholder: "Select Basecamp", ...form.getInputProps("basecamp") }} />
+                </Grid.Col>
+
+                <Grid.Col span={{ base: 12, sm: 6 }}>
+                  <BaseCampTemplateSelect
+                    basecamp={form.getValues().basecamp}
+                    selectProps={{ label: "Basecamp Templates", placeholder: "Select Basecamp Template", ...form.getInputProps("template") }}
+                  />
+                </Grid.Col>
+
+                <Grid.Col span={{ base: 12, sm: 6 }}>
                   <PicklistsSelect
                     queryObject={{ resource: "Project", field: "status" }}
                     selectProps={{ label: "project status", Placeholder: "Select Project Status", ...form.getInputProps("status") }}
@@ -143,8 +157,8 @@ const AddProjectModal = ({ isOpen = false, onClose = () => {} }) => {
                 </Grid.Col>
                 <Grid.Col span={12}>
                   <PicklistsMultiSelect
-                    queryObject={{ resource: "Order", field: "services" }}
-                    multiSelectProps={{ label: "services", placeholder: "Select Services", ...form.getInputProps("services") }}
+                    queryObject={{ resource: "Project", field: "services" }}
+                    multiSelectProps={{ label: "Project services", placeholder: "Select Project Services", ...form.getInputProps("services") }}
                   />
                 </Grid.Col>
                 <Grid.Col span={12}>

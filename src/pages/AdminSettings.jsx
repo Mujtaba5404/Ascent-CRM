@@ -3,9 +3,10 @@ import { upperFirst } from "@mantine/hooks";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 
 const tabList = [
-  { label: upperFirst("basecamp"), value: "basecamp", index: true },
+  { label: upperFirst("basecamps"), value: "basecamp", index: true },
   { label: upperFirst("companies"), value: "companies"},
   { label: upperFirst("brands"), value: "brands" },
+  { label: upperFirst("smtps"), value: "smtps" },
   { label: upperFirst("users"), value: "users" },
   { label: upperFirst("picklists"), value: "picklists" },
   { label: upperFirst("role and permissions"), value: "role-and-permissions" },

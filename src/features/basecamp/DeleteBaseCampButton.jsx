@@ -1,8 +1,8 @@
-import { useDeleteCompanyMutation } from "src/api/company";
+import { useDeleteBaseCampMutation } from "src/api/basecamp";
 import DeleteItemButton from "src/components/DeleteItemButton";
 
-const DeleteBaseCampButton = ({ companyId }) => {
-  return <DeleteItemButton resource="company" label="company" mutationHook={useDeleteCompanyMutation} itemId={companyId} />;
+const DeleteBaseCampButton = ({ basecampId }) => {
+  return <DeleteItemButton resource="basecamp" label="basecamp" mutationHook={useDeleteBaseCampMutation} itemId={basecampId} />;
 };
 
 export default DeleteBaseCampButton;

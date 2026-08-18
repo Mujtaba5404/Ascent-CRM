@@ -93,7 +93,7 @@ const EditProjectModal = ({ isOpen = false, onClose = () => {}, compact = false,
           </Grid.Col>
 
           <Grid.Col span={12}>
-            <PicklistsMultiSelect queryObject={{ resource: "Order", field: "services" }} multiSelectProps={{label: "services", Placeholder:"Select Services", ...form.getInputProps("services")}}/>
+            <PicklistsMultiSelect queryObject={{ resource: "Project", field: "services" }} multiSelectProps={{label: "Project services", Placeholder:"Select Project Services", ...form.getInputProps("services")}}/>
           </Grid.Col>
 
           <Grid.Col span={12}>

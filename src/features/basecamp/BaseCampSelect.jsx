@@ -1,19 +1,23 @@
 import { Loader } from "@mantine/core";
-import { useGetAllCompaniesQuery } from "src/api/company";
+import { useGetAllBasecampQuery } from "src/api/basecamp";
 import Select from "src/components/Select";
 
 const BaseCampSelect = ({ selectProps = {}, queryObject = {} }) => {
-  const companies = useGetAllCompaniesQuery({ query: queryObject });
+  const basecamps = useGetAllBasecampQuery({ query: queryObject });
+  const data = (basecamps.data || []).map((item) => ({...item, title: item.company?.title, accountId: item.accountId, selectTitle: `${item.company?.title || ""} - ${item.accountId || ""}`}));
 
   return (
     <Select
-      data={companies.data}
+      data={data}
       tt="capitalize"
-      selectLabel="title"
+      selectLabel="selectTitle"
       selectValue="_id"
-      rightSection={companies.isLoading && <Loader size={18} />}
+      rightSection={basecamps.isLoading && <Loader size={18} />}
       {...selectProps}
-      {...(companies.isError && { disabled: true, placeholder: "Error loading companies" })}
+      {...(basecamps.isError && {
+        disabled: true,
+        placeholder: "Error loading basecamps",
+      })}
     />
   );
 };

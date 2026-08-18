@@ -42,6 +42,9 @@ const AddClientModal = ({ isOpen = false, onClose = () => {} }) => {
       <Stack component={"form"} onSubmit={form.onSubmit(handleSubmit)}>
         <ScrollArea.Autosize mah={450} scrollbars="y">
           <Grid grow align="flex-end">
+            <Grid.Col span={{ base: 12, sm: 8 }}>
+              <BrandsSelect selectProps={{ required: true, label: "brand", Placeholder:"Select Brand", ...form.getInputProps("brand") }} />
+            </Grid.Col>
             <Grid.Col span={{ base: 12, sm: 6 }}>
               <TextInput required label="client name" placeholder="Enter Client Name" {...form.getInputProps("title")} />
             </Grid.Col>
@@ -50,9 +53,6 @@ const AddClientModal = ({ isOpen = false, onClose = () => {} }) => {
             </Grid.Col>
             <Grid.Col span={{ base: 12, sm: 6 }}>
               <TextInput type="tel" label="Client Phone" placeholder="Use / for multiple phones" tt={"initial"} {...form.getInputProps("phone")} onChange={handlePhone} />
-            </Grid.Col>
-            <Grid.Col span={{ base: 12, sm: 8 }}>
-              <BrandsSelect selectProps={{ required: true, label: "brand", Placeholder:"Select Brand", ...form.getInputProps("brand") }} />
             </Grid.Col>
           </Grid>
         </ScrollArea.Autosize>

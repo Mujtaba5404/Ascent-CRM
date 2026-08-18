@@ -14,12 +14,12 @@ const ClientsLayout = () => {
   return (
     <TabbedLayout
       tabs={[
-        {
-          value: "summary",
-          label: "Summary",
-          path: "summary",
-          permission: { resource: "client", action: "read" },
-        },
+        // {
+        //   value: "summary",
+        //   label: "Summary",
+        //   path: "summary",
+        //   permission: { resource: "client", action: "read" },
+        // },
         {
           value: "clients",
           label: "Clients",

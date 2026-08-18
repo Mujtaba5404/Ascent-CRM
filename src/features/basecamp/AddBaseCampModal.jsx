@@ -31,13 +31,14 @@ const AddBaseCampModal = ({ isOpen = false, onClose = () => {} }) => {
       <Stack component="form" onSubmit={form.onSubmit(handleSubmit)}>
         <CompaniesSelect
           selectProps={{
+            "data-autofocus": true,
             required: true,
             label: "select company",
             placeholder: "Select company",
             ...form.getInputProps("company"),
           }}
         />
-        <TextInput required label="client Id" data-autofocus {...form.getInputProps("clientId")} />
+        <TextInput required label="client Id" {...form.getInputProps("clientId")} />
         <TextInput required label="client Secret" {...form.getInputProps("clientSecret")} />
         <TextInput required label="redirect Uri" {...form.getInputProps("redirectUri")} />
         <Button type="submit" loading={connectBasecampMutation.isPending}>
