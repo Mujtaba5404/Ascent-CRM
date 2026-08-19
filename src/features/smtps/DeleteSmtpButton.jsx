@@ -12,9 +12,7 @@ const DeleteSmtpButton = ({ smtpId }) => {
     modals.openConfirmModal({
       title: capitalizeLetters("delete smtp confirmation"),
       centered: true,
-      children: (
-        <Text size="sm">Are you sure you want to delete this smtp?</Text>
-      ),
+      children: <Text size="sm">Are you sure you want to delete this smtp?</Text>,
       labels: { confirm: "Delete", cancel: "Cancel" },
       confirmProps: { color: "red" },
       onConfirm: () => {
@@ -24,12 +22,8 @@ const DeleteSmtpButton = ({ smtpId }) => {
   };
 
   return (
-    <CanAccess modelName="smtp" action="delete">
-      <ActionIcon
-        variant="subtle"
-        color="red"
-        onClick={deleteSmtpConfirmationModal}
-      >
+    <CanAccess resource="smtp" action="delete">
+      <ActionIcon variant="subtle" color="red" onClick={deleteSmtpConfirmationModal}>
         <IconTrash size={18} />
       </ActionIcon>
     </CanAccess>

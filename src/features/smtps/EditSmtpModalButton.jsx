@@ -8,7 +8,7 @@ const EditSmtpModalButton = ({ smtp }) => {
   const [opened, { open, close }] = useDisclosure(false);
 
   return (
-    <CanAccess modelName="smtp" action="patch">
+    <CanAccess resource="smtp" action="update">
       <ActionIcon variant="subtle" onClick={open}>
         <IconPencil size={18} />
       </ActionIcon>

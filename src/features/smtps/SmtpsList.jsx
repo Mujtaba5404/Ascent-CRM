@@ -12,17 +12,13 @@ const SmtpsList = ({ smtps = [] }) => {
             <Stack gap={4}>
               <Group gap="sm" justify="space-between">
                 <Text fw={500} mr="auto">
-                  {truncate(smtp.name, { length: 20 })}
+                  {truncate(smtp.email, { length: 30 })}
                 </Text>
 
                 <EditSmtpModalButton smtp={smtp} />
 
                 <DeleteSmtpButton smtpId={smtp._id} />
               </Group>
-
-              <Text size="sm" c="dimmed">
-                {truncate(smtp.email, { length: 30 })}
-              </Text>
             </Stack>
           </Paper>
         );

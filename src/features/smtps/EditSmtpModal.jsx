@@ -1,4 +1,4 @@
-import { Button, Modal, PasswordInput, SimpleGrid, Stack, Switch, TextInput } from "@mantine/core";
+import { Button, Fieldset, Modal, PasswordInput, SimpleGrid, Stack, Switch, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { IconLock } from "@tabler/icons-react";
 import { useUpdateSmtpMutation } from "src/api/smtp";
@@ -10,33 +10,35 @@ const EditSmtpModal = ({ isOpen = false, onClose = () => {}, smtp }) => {
   const form = useForm({
     initialValues: {
       brand: smtp?.brand || "",
-      imap: smtp?.imap || "",
-      host: smtp?.host || "",
-      port: smtp?.port || "",
-      user: smtp?.user || "",
-      password: smtp?.pass || "",
+      name: smtp?.name || "",
       email: smtp?.email || "",
-      isActive: smtp?.isActive ?? true,
+      imapHost: smtp?.imapHost || "",
+      imapPort: smtp?.imapPort || "",
+      imapSecure: smtp?.imapSecure ?? true,
+      smtpHost: smtp?.smtpHost || "",
+      smtpPort: smtp?.smtpPort || "",
+      smtpSecure: smtp?.smtpSecure ?? true,
+      username: smtp?.username || "",
+      password: smtp?.password || "",
     },
   });
 
   const handleSubmit = (values) => {
     const payload = {
       brand: values.brand,
-      imap: values.imap,
-      host: values.host,
-      port: Number(values.port),
-      user: values.user,
-      pass: values.password,
+      name: values.name,
       email: values.email,
-      isActive: values.isActive,
+      imapHost: values.imapHost,
+      imapPort: Number(values.imapPort),
+      imapSecure: values.imapSecure,
+      smtpHost: values.smtpHost,
+      smtpPort: Number(values.smtpPort),
+      smtpSecure: values.smtpSecure,
+      username: values.username,
+      password: values.password,
     };
-
     updateSmtpMutation.mutate(
-      {
-        smtpId: smtp._id,
-        payload,
-      },
+      { smtpId: smtp._id, payload },
       {
         onSuccess: () => {
           onClose();
@@ -46,30 +48,36 @@ const EditSmtpModal = ({ isOpen = false, onClose = () => {}, smtp }) => {
   };
 
   return (
-    <Modal title={"update smtp"} tt={"capitalize"} opened={isOpen} onClose={onClose}>
+    <Modal title={"update smtp"} tt={"capitalize"} opened={isOpen} onClose={onClose} size="lg">
       <form onSubmit={form.onSubmit(handleSubmit)}>
         <Stack>
-          <BrandsSelect
-            selectProps={{
-              required: true,
-              label: "select brand",
-              ...form.getInputProps("brand"),
-            }}
-          />
-
+          <BrandsSelect selectProps={{ required: true, label: "select brand", ...form.getInputProps("brand") }} />
           <SimpleGrid cols={2}>
-            <TextInput required label="imap" {...form.getInputProps("imap")} />
-            <TextInput required label="host" {...form.getInputProps("host")} />
-
-            <TextInput required label="port" {...form.getInputProps("port")} />
-            <TextInput required label="user" {...form.getInputProps("user")} />
+            <TextInput required label="name" {...form.getInputProps("name")} />
+            <TextInput type="email" required label="email" {...form.getInputProps("email")} />
           </SimpleGrid>
-
-          <PasswordInput required label="password" leftSection={<IconLock size={18} />} {...form.getInputProps("password")} />
-
-          <TextInput type="email" required label="email" {...form.getInputProps("email")} />
-
-          <Switch label="active" {...form.getInputProps("isActive", { type: "checkbox" })} />
+          <SimpleGrid cols={2}>
+            <TextInput required label="username" {...form.getInputProps("username")} />
+            <PasswordInput required label="password" leftSection={<IconLock size={18} />} leftSectionPointerEvents="none" {...form.getInputProps("password")} />
+          </SimpleGrid>
+          <Fieldset legend="IMAP settings">
+            <Stack gap="sm">
+              <SimpleGrid cols={2}>
+                <TextInput required label="imap host" {...form.getInputProps("imapHost")} />
+                <TextInput required type="number" label="imap port" {...form.getInputProps("imapPort")} />
+              </SimpleGrid>
+              <Switch label="imap secure" {...form.getInputProps("imapSecure", { type: "checkbox" })} />
+            </Stack>
+          </Fieldset>
+          <Fieldset legend="SMTP settings">
+            <Stack gap="sm">
+              <SimpleGrid cols={2}>
+                <TextInput required label="smtp host" {...form.getInputProps("smtpHost")} />
+                <TextInput required type="number" label="smtp port" {...form.getInputProps("smtpPort")} />
+              </SimpleGrid>
+              <Switch label="smtp secure" {...form.getInputProps("smtpSecure", { type: "checkbox" })} />
+            </Stack>
+          </Fieldset>
 
           <Button type="submit" mt="md" loading={updateSmtpMutation.isPending}>
             Update Smtp

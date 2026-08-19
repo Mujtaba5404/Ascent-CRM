@@ -28,7 +28,7 @@ const BaseCampList = ({ basecamps = [] }) => {
                   </Text>
 
                   {basecamp.accountId && (
-                    <Badge size="xs" variant="light" w="fit-content">
+                    <Badge size="xs" color="teal" variant="light" w="fit-content">
                       {basecamp.accountId}
                     </Badge>
                   )}
